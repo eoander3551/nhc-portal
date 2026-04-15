@@ -3,1976 +3,1060 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NHC — Billing Portal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+<title>NHC Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #F7F6F3;
-  --surface: #FFFFFF;
-  --surface2: #F2F1ED;
-  --border: rgba(0,0,0,0.08);
-  --border-md: rgba(0,0,0,0.14);
-  --text: #1A1917;
-  --text-2: #6B6860;
-  --text-3: #A09D96;
-  --accent: #1A1917;
-  --radius: 12px;
-  --radius-sm: 8px;
-
-  --role-cust: #2563C4;
-  --role-cust-bg: #EEF3FD;
-  --role-cust-text: #1A3F8A;
-  --role-ops: #0F7B5A;
-  --role-ops-bg: #E6F5EF;
-  --role-ops-text: #084D38;
-  --role-oss: #7C3ABA;
-  --role-oss-bg: #F3ECFD;
-  --role-oss-text: #4C1D8F;
-
-  --teal: #0F7B5A; --teal-bg: #E6F5EF; --teal-text: #084D38;
-  --purple: #7C3ABA; --purple-bg: #F3ECFD; --purple-text: #4C1D8F;
-  --blue: #2563C4; --blue-bg: #EEF3FD; --blue-text: #1A3F8A;
-  --gray-bg: #F2F1ED; --gray-text: #3D3C38;
-  --warn: #A0500A; --warn-bg: #FEF3E8;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-/* ── SCREENS ── */
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; }
-
-/* ── LOGIN ── */
-#screen-login {
-  align-items: center;
-  justify-content: center;
-  background: var(--text);
-  gap: 0;
-}
-.login-wrap {
-  width: 100%;
-  max-width: 420px;
-  padding: 2.5rem 2rem;
-}
-.login-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
-}
-.login-tagline {
-  font-size: 13px;
-  color: rgba(255,255,255,0.45);
-  margin-bottom: 2.5rem;
-  letter-spacing: 0.03em;
-}
-.login-heading {
-  font-family: 'Syne', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.5rem;
-}
-.login-sub {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 2rem;
-}
-.field-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.field-label.dark { color: var(--text-2); }
-.login-input {
-  width: 100%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: var(--radius-sm);
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  padding: 10px 14px;
-  margin-bottom: 1rem;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.login-input:focus { border-color: rgba(255,255,255,0.35); }
-.login-input::placeholder { color: rgba(255,255,255,0.25); }
-.role-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 1.5rem;
-}
-.role-btn {
-  padding: 10px 6px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.5);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-}
-.role-btn:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); }
-.role-btn.selected { border-color: #fff; color: #fff; background: rgba(255,255,255,0.1); }
-.role-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  margin: 0 auto 6px;
-}
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  background: #fff;
-  color: var(--text);
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-.login-btn:hover { opacity: 0.88; }
-
-/* ── APP SHELL ── */
-#screen-app { flex-direction: row; }
-
-.sidebar {
-  width: 220px;
-  min-width: 220px;
-  background: var(--text);
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem 0;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-}
-.sidebar-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  padding: 0 1.25rem 1.5rem;
-  letter-spacing: -0.02em;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  margin-bottom: 1rem;
-}
-.sidebar-logo span { color: rgba(255,255,255,0.35); }
-.sidebar-section {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  padding: 0.75rem 1.25rem 0.4rem;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 1.25rem;
-  color: rgba(255,255,255,0.5);
-  font-size: 13.5px;
-  cursor: pointer;
-  border-left: 2px solid transparent;
-  transition: all 0.12s;
-}
-.nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
-.nav-item.active { color: #fff; border-left-color: #fff; background: rgba(255,255,255,0.06); }
-.nav-icon {
-  width: 16px; height: 16px;
-  opacity: 0.6;
-  flex-shrink: 0;
-}
-.nav-item.active .nav-icon { opacity: 1; }
-.nav-badge {
-  margin-left: auto;
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  background: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.6);
-  padding: 1px 6px;
-  border-radius: 20px;
-}
-.nav-item.active .nav-badge { background: rgba(255,255,255,0.2); color: #fff; }
-.sidebar-bottom {
-  margin-top: auto;
-  padding: 1rem 1.25rem 0;
-  border-top: 1px solid rgba(255,255,255,0.07);
-}
-.user-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.user-avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-.user-name { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
-.user-role-tag {
-  font-size: 10px;
-  color: rgba(255,255,255,0.4);
-  font-family: 'DM Mono', monospace;
-  margin-top: 1px;
-}
-.logout-btn {
-  margin-top: 12px;
-  width: 100%;
-  padding: 7px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--radius-sm);
-  color: rgba(255,255,255,0.45);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.logout-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
-
-/* ── MAIN ── */
-.main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.topbar-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-}
-.topbar-breadcrumb {
-  font-size: 12px;
-  color: var(--text-3);
-  font-family: 'DM Mono', monospace;
-}
-.topbar-breadcrumb span { color: var(--text-2); }
-.topbar-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.topbar-role-chip {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-family: 'DM Mono', monospace;
-}
-.search-box {
-  background: var(--bg);
-  border: 1px solid var(--border-md);
-  border-radius: var(--radius-sm);
-  padding: 6px 12px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: var(--text);
-  width: 200px;
-  outline: none;
-}
-.search-box::placeholder { color: var(--text-3); }
-
-.content { padding: 2rem; flex: 1; }
-
-/* ── PAGE: DASHBOARD ── */
-.page { display: none; }
-.page.active { display: block; }
-
-.page-heading {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 0.25rem;
-}
-.page-sub {
-  font-size: 13px;
-  color: var(--text-2);
-  margin-bottom: 1.75rem;
-}
-
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 1.75rem;
-}
-.metric-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-}
-.metric-card.accent {
-  background: var(--text);
-  border-color: transparent;
-}
-.mc-label {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  margin-bottom: 8px;
-}
-.metric-card.accent .mc-label { color: rgba(255,255,255,0.45); }
-.mc-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.metric-card.accent .mc-val { color: #fff; }
-.mc-sub { font-size: 12px; color: var(--text-3); }
-.metric-card.accent .mc-sub { color: rgba(255,255,255,0.4); }
-.mc-delta {
-  display: inline-block;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  padding: 2px 7px;
-  border-radius: 20px;
-  margin-top: 6px;
-}
-.delta-up { background: var(--teal-bg); color: var(--teal-text); }
-.delta-down { background: var(--warn-bg); color: var(--warn); }
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-.section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-}
-.section-action {
-  font-size: 12px;
-  color: var(--text-2);
-  cursor: pointer;
-  border: 1px solid var(--border-md);
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  font-family: 'DM Sans', sans-serif;
-  transition: all 0.12s;
-}
-.section-action:hover { background: var(--surface2); }
-
-.accounts-table {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 1.75rem;
-}
-.atable-head {
-  display: grid;
-  padding: 10px 1.25rem;
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  gap: 12px;
-}
-.atable-row {
-  display: grid;
-  padding: 12px 1.25rem;
-  border-bottom: 1px solid var(--border);
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: background 0.1s;
-  font-size: 13px;
-}
-.atable-row:last-child { border-bottom: none; }
-.atable-row:hover { background: var(--bg); }
-.acct-id-cell {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-}
-.acct-name-cell { color: var(--text); font-weight: 500; }
-.acct-name-sub { font-size: 11px; color: var(--text-3); font-weight: 400; margin-top: 1px; }
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
-.status-dot { width: 6px; height: 6px; border-radius: 50%; }
-.status-active { background: var(--teal-bg); color: var(--teal-text); }
-.status-active .status-dot { background: var(--teal); }
-.status-pending { background: var(--warn-bg); color: var(--warn); }
-.status-pending .status-dot { background: var(--warn); }
-.amt-cell { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
-.amt-cell.muted { color: var(--text-3); }
-.services-cell { display: flex; gap: 4px; flex-wrap: wrap; }
-.svc-tag {
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 20px;
-  font-weight: 500;
-}
-.tag-net { background: var(--teal-bg); color: var(--teal-text); }
-.tag-sec { background: var(--purple-bg); color: var(--purple-text); }
-.tag-voi { background: var(--blue-bg); color: var(--blue-text); }
-.tag-pot { background: var(--gray-bg); color: var(--gray-text); }
-.tag-sd { background: #FEF3E8; color: #7A3A0A; }
-.arrow-cell { color: var(--text-3); font-size: 16px; text-align: right; }
-.grid-cols-dash { grid-template-columns: 90px minmax(0,2fr) 110px 1fr 100px 100px 28px; }
-
-.two-col { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; margin-bottom: 1.75rem; }
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-}
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 1rem;
-}
-
-.activity-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-.activity-item:last-child { border-bottom: none; }
-.activity-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  margin-top: 5px;
-  flex-shrink: 0;
-}
-.activity-text { color: var(--text); flex: 1; }
-.activity-text span { color: var(--text-2); }
-.activity-time { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; white-space: nowrap; }
-
-.alert-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px;
-  font-size: 13px;
-}
-.alert-warn { background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(160,80,10,0.15); }
-.alert-info { background: var(--blue-bg); color: var(--blue-text); border: 1px solid rgba(37,99,196,0.15); }
-
-/* ── PAGE: ACCOUNT DETAIL ── */
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--text-2);
-  cursor: pointer;
-  margin-bottom: 1.25rem;
-  transition: color 0.12s;
-}
-.back-btn:hover { color: var(--text); }
-
-.acct-hero {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-.acct-hero-icon {
-  width: 52px; height: 52px;
-  background: var(--text);
-  border-radius: var(--radius);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-}
-.acct-hero-info { flex: 1; }
-.acct-hero-id {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--text-3);
-  margin-bottom: 3px;
-}
-.acct-hero-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.acct-hero-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.acct-hero-actions {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-md);
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.12s;
-  white-space: nowrap;
-}
-.btn:hover { background: var(--surface2); }
-.btn.primary {
-  background: var(--text);
-  color: #fff;
-  border-color: transparent;
-}
-.btn.primary:hover { opacity: 0.88; }
-.btn.ops-only { border-color: var(--teal); color: var(--teal-text); background: var(--teal-bg); }
-.btn.oss-only { border-color: var(--purple); color: var(--purple-text); background: var(--purple-bg); }
-
-.detail-metrics {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0,1fr));
-  gap: 10px;
-  margin-bottom: 1.5rem;
-}
-.dm-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 1rem;
-}
-.dm-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
-.dm-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.1; }
-.dm-sub { font-size: 11px; color: var(--text-3); margin-top: 3px; }
-
-.billing-tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 1.5rem;
-}
-.billing-tab {
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-2);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.12s;
-}
-.billing-tab:hover { color: var(--text); }
-.billing-tab.active { color: var(--text); border-bottom-color: var(--text); }
-.billing-tab-content { display: none; }
-.billing-tab-content.active { display: block; }
-
-/* BTN blocks */
-.btn-block {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 14px;
-}
-.btn-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 1.25rem;
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.1s;
-}
-.btn-head:hover { background: #ECEAE4; }
-.btn-icon-box {
-  width: 38px; height: 38px;
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-.btn-info-wrap { flex: 1; min-width: 0; }
-.btn-eyebrow {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  display: flex; align-items: center; gap: 6px;
-  margin-bottom: 2px;
-}
-.btn-id-text {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-}
-.btn-desc-text { font-size: 12px; color: var(--text-2); }
-.btn-right { text-align: right; flex-shrink: 0; }
-.btn-monthly { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); }
-.btn-monthly-label { font-size: 11px; color: var(--text-3); }
-.btn-expand { font-size: 13px; color: var(--text-3); margin-left: 4px; transition: transform 0.18s; display: inline-block; }
-.btn-expand.open { transform: rotate(90deg); }
-
-.ani-group { border-bottom: 1px solid var(--border); }
-.ani-group:last-child { border-bottom: none; }
-.ani-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 1.25rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-.ani-pulse {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.ani-label-text {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  margin-right: 4px;
-}
-.ani-id-text {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-}
-.ani-subtotal {
-  margin-left: auto;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-2);
-}
-
-.line-row {
-  display: grid;
-  align-items: center;
-  padding: 9px 1.25rem 9px 2.25rem;
-  border-bottom: 1px solid var(--border);
-  gap: 10px;
-  font-size: 13px;
-}
-.line-row:last-child { border-bottom: none; }
-.line-row.zero-line { opacity: 0.45; }
-.lr-name { color: var(--text); }
-.lr-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--text-3);
-  margin-top: 2px;
-}
-.lr-code { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-3); }
-.lr-amt { text-align: right; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
-.lr-zero { text-align: right; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-3); }
-.lr-total { text-align: right; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-3); }
-.lr-type {
-  text-align: center;
-}
-.term-pill {
-  display: inline-block;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 20px;
-  background: var(--teal-bg);
-  color: var(--teal-text);
-  margin-left: 5px;
-}
-.flag-pill {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 20px;
-  background: var(--warn-bg);
-  color: var(--warn);
-}
-.type-pill {
-  display: inline-block;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 20px;
-}
-.type-r { background: var(--teal-bg); color: var(--teal-text); }
-.type-c { background: var(--purple-bg); color: var(--purple-text); }
-
-.btl-sub-head {
-  padding: 6px 1.25rem 6px 2.25rem;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  background: #FAFAF8;
-  border-bottom: 1px solid var(--border);
-}
-
-/* OSS-only action row */
-.oss-action-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 1.25rem 8px 2.25rem;
-  background: var(--purple-bg);
-  border-top: 1px solid rgba(124,58,186,0.1);
-}
-.oss-action-label { font-size: 12px; color: var(--purple-text); flex: 1; }
-
-/* Disputes tab */
-.dispute-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-.dispute-row:last-child { border-bottom: none; }
-.dispute-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--text-3);
-  min-width: 80px;
-}
-.dispute-desc { flex: 1; color: var(--text); }
-.dispute-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-.dispute-status { flex-shrink: 0; }
-
-/* Notes / ops tab */
-.note-row {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-.note-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.note-author { font-weight: 500; color: var(--text); }
-.note-time { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; }
-.note-role-badge {
-  font-size: 10px;
-  padding: 1px 7px;
-  border-radius: 20px;
-}
-.note-body { color: var(--text-2); line-height: 1.5; }
-
-/* circuit detail panel */
-.circuit-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-}
-.cp-head {
-  padding: 1rem 1.25rem;
-  background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.cp-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  flex: 1;
-}
-.cp-body { padding: 1rem 1.25rem; }
-.cp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 1rem;
-}
-.cp-field-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
-.cp-field-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); }
-
-.hidden { display: none !important; }
+:root{--ink:#16150F;--ink2:#5C5A52;--ink3:#9C9A92;--paper:#F8F7F3;--sur:#FFF;--ln:rgba(22,21,15,0.09);--lnm:rgba(22,21,15,0.15);--r:10px;--rs:6px;--teal:#0A6E52;--tlt:#E4F4EE;--tm:#1A9E75;--amr:#8A4F00;--alt:#FEF3E0;--am:#D97706;--blu:#1A3F8A;--blt:#EBF1FD;--bm:#2563C4;--sl:#3A3A42;--slt:#EEEDF0;--sm2:#6B6A75;--red:#8A1A1A;--rlt:#FEF0F0;--rm:#DC2626;--pur:#4C1D8F;--plt:#F3ECFD;--pm:#7C3AED}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Instrument Sans",sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.5}
+.scr{display:none;min-height:100vh}.scr.on{display:flex;flex-direction:column}
+#sl{align-items:center;justify-content:center;background:var(--ink)}
+.lc{width:380px;padding:2.5rem}
+.ll{font-family:"Instrument Serif",serif;font-size:28px;color:#fff;margin-bottom:2px}
+.ll em{font-style:italic;color:rgba(255,255,255,0.4)}
+.lt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:2.5rem}
+.lb{display:block;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;margin-top:1.25rem}
+.li{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--rs);color:#fff;font-family:"Instrument Sans",sans-serif;font-size:14px;padding:10px 14px;outline:none}
+.li::placeholder{color:rgba(255,255,255,0.2)}
+.rr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:1.25rem 0 1.75rem}
+.ro{padding:10px 8px;border:1.5px solid rgba(255,255,255,0.1);border-radius:var(--rs);background:transparent;color:rgba(255,255,255,0.4);font-size:12px;font-weight:500;text-align:center;cursor:pointer;transition:all .15s;font-family:"Instrument Sans",sans-serif}
+.ro:hover{border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.7)}
+.ro.on{border-color:#fff;color:#fff;background:rgba(255,255,255,0.08)}
+.rd{width:7px;height:7px;border-radius:50%;margin:0 auto 6px}
+.lsub{width:100%;padding:12px;background:#fff;color:var(--ink);border:none;border-radius:var(--rs);font-size:14px;font-weight:600;cursor:pointer;font-family:"Instrument Sans",sans-serif}
+#sa{flex-direction:row}
+.sb{width:228px;min-width:228px;background:var(--ink);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto}
+.sbt{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sbl{font-family:"Instrument Serif",serif;font-size:20px;color:#fff}
+.sbl em{font-style:italic;color:rgba(255,255,255,0.4)}
+.sba{margin-top:10px;padding:10px;background:rgba(255,255,255,0.05);border-radius:var(--rs);border:1px solid rgba(255,255,255,0.08)}
+.sbai{font-size:10px;font-family:"JetBrains Mono",monospace;color:rgba(255,255,255,0.35);margin-bottom:3px}
+.sban{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
+.sbas{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px}
+.sbs{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:1rem 1.25rem .35rem}
+.nl{display:flex;align-items:center;gap:9px;padding:7px 1.25rem;font-size:13px;color:rgba(255,255,255,0.5);border-left:2px solid transparent;cursor:pointer;font-family:"Instrument Sans",sans-serif}
+.nl:hover{color:rgba(255,255,255,0.82);background:rgba(255,255,255,0.03)}
+.nl.on{color:#fff;border-left-color:#fff;background:rgba(255,255,255,0.05)}
+.nl svg{width:14px;height:14px;opacity:.7;flex-shrink:0}.nl.on svg{opacity:1}
+.nb{margin-left:auto;font-size:10px;font-family:"JetBrains Mono",monospace;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);padding:1px 6px;border-radius:20px}
+.sbb{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.urow{display:flex;align-items:center;gap:9px}
+.uav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.unm{font-size:13px;color:rgba(255,255,255,0.8);font-weight:500}
+.url{font-size:10px;color:rgba(255,255,255,0.35);font-family:"JetBrains Mono",monospace;margin-top:1px}
+.sout{margin-top:10px;width:100%;padding:7px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:var(--rs);color:rgba(255,255,255,0.35);font-size:12px;cursor:pointer;font-family:"Instrument Sans",sans-serif}
+.mn{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.topb{height:52px;background:var(--sur);border-bottom:1px solid var(--ln);display:flex;align-items:center;padding:0 1.75rem;gap:10px;position:sticky;top:0;z-index:20}
+.ttt{font-family:"Instrument Serif",serif;font-size:17px;color:var(--ink)}
+.tcr{font-size:12px;color:var(--ink3);font-family:"JetBrains Mono",monospace}
+.tcr span{color:var(--ink2)}
+.tr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.rc{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;font-family:"JetBrains Mono",monospace}
+.ts{background:var(--paper);border:1px solid var(--lnm);border-radius:var(--rs);padding:6px 12px;font-size:13px;font-family:"Instrument Sans",sans-serif;color:var(--ink);width:200px;outline:none}
+.ts::placeholder{color:var(--ink3)}
+.ctn{padding:1.75rem;flex:1;overflow-y:auto}
+.pg{display:none}.pg.on{display:block}
+.ph{font-family:"Instrument Serif",serif;font-size:24px;color:var(--ink);letter-spacing:-.02em;margin-bottom:3px}
+.ps{font-size:13px;color:var(--ink2);margin-bottom:1.75rem}
+.hid{display:none!important}
+.mn2{font-family:"JetBrains Mono",monospace}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.ct{background:var(--tlt);color:var(--teal)}.ca{background:var(--alt);color:var(--amr)}.cb{background:var(--blt);color:var(--blu)}.cs{background:var(--slt);color:var(--sl)}.cr2{background:var(--rlt);color:var(--red)}.cp{background:var(--plt);color:var(--pur)}.cg{background:#E6F9F1;color:#065F3C}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sg{display:grid;gap:12px;margin-bottom:1.75rem}
+.sg4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sg5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.sg2{grid-template-columns:1fr 1fr}
+.stc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);padding:1.1rem 1.25rem}
+.stc.dk{background:var(--ink);border-color:transparent}
+.stl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.stc.dk .stl{color:rgba(255,255,255,0.35)}
+.stv{font-family:"Instrument Serif",serif;font-size:30px;color:var(--ink);line-height:1}
+.stc.dk .stv{color:#fff}
+.sts{font-size:12px;color:var(--ink3);margin-top:4px}
+.stc.dk .sts{color:rgba(255,255,255,0.35)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;border-radius:var(--rs);border:1px solid var(--lnm);background:var(--sur);color:var(--ink);cursor:pointer;white-space:nowrap;font-family:"Instrument Sans",sans-serif}
+.btn:hover{background:var(--paper)}
+.bp{background:var(--ink);color:#fff;border-color:transparent}.bp:hover{opacity:.88}
+.btl{background:var(--tlt);color:var(--teal);border-color:rgba(10,110,82,0.2)}
+.bam{background:var(--alt);color:var(--amr);border-color:rgba(138,79,0,0.2)}
+.sm{padding:5px 10px;font-size:12px}
+.al{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);font-size:13px;margin-bottom:10px}
+.aw{background:var(--alt);color:var(--amr);border:1px solid rgba(138,79,0,0.15)}
+.ai2{background:var(--blt);color:var(--blu);border:1px solid rgba(26,63,138,0.15)}
+.cd{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden}
+.cdh{padding:1rem 1.25rem;border-bottom:1px solid var(--ln);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cdht{font-weight:600;font-size:14px;color:var(--ink)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:8px 12px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);background:var(--paper);border-bottom:1px solid var(--ln)}
+td{padding:10px 12px;border-bottom:1px solid var(--ln);color:var(--ink);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.cl:hover td{background:var(--paper);cursor:pointer}
+tr.z td{color:var(--ink3)}
+.ch{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);padding:1.5rem;margin-bottom:1.75rem;display:flex;align-items:flex-start;gap:1.25rem}
+.chic{width:54px;height:54px;background:var(--ink);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:"Instrument Serif",serif;font-size:13px;color:rgba(255,255,255,0.7);text-align:center}
+.scg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:1.75rem}
+.sc{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .12s}
+.sc:hover{border-color:var(--lnm);transform:translateY(-1px)}
+.sch{padding:14px 1.25rem;border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:12px}
+.sci{width:36px;height:36px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:"JetBrains Mono",monospace}
+.scmrc{font-family:"Instrument Serif",serif;font-size:18px;color:var(--ink);white-space:nowrap}
+.scmrl{font-size:10px;color:var(--ink3);text-align:right}
+.scb{padding:12px 1.25rem}
+.scloc{display:flex;align-items:center;gap:8px;font-size:12px;padding:5px 8px;border-radius:var(--rs);background:var(--paper);margin-bottom:4px}
+.slid{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink3);min-width:44px}
+.scft{padding:8px 1.25rem;border-top:1px solid var(--ln);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3)}
+.lh{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.lht{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+.lhi{flex:1}
+.lid2{font-size:10px;font-family:"JetBrains Mono",monospace;color:var(--ink3);margin-bottom:2px}
+.lnm{font-family:"Instrument Serif",serif;font-size:19px;color:var(--ink)}
+.lad{font-size:12px;color:var(--ink2);margin-top:2px}
+.lmt{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;border-top:1px solid var(--ln);padding-top:1rem}
+.lml{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
+.lmv{font-size:13px;font-weight:500;color:var(--ink)}
+.tabs{display:flex;border-bottom:1px solid var(--ln);margin-bottom:1.5rem}
+.tab{padding:8px 18px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}.tab.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tp{display:none}.tp.on{display:block}
+.bb{border:1px solid var(--ln);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.bbh{display:flex;align-items:center;gap:12px;padding:13px 1.25rem;background:var(--paper);border-bottom:1px solid var(--ln);cursor:pointer}
+.bbh:hover{background:#EFEDE6}
+.bbi{width:36px;height:36px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;flex-shrink:0}
+.bbin{flex:1;min-width:0}
+.bbey{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.bbid{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--ink)}
+.bbd{font-size:12px;color:var(--ink2)}
+.bbm{font-family:"Instrument Serif",serif;font-size:18px;color:var(--ink);text-align:right;white-space:nowrap}
+.bbml{font-size:10px;color:var(--ink3);text-align:right}
+.bc{font-size:14px;color:var(--ink3);margin-left:6px;display:inline-block;transition:transform .18s}
+.bc.op{transform:rotate(90deg)}
+.ag{border-bottom:1px solid var(--ln)}.ag:last-child{border-bottom:none}
+.agh{display:flex;align-items:center;gap:9px;padding:9px 1.25rem;background:var(--sur);border-bottom:1px solid var(--ln)}
+.ap{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.al2{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.ai3{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--ink)}
+.as2{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink2)}
+.lr{display:grid;align-items:center;padding:9px 1.25rem 9px 2rem;border-bottom:1px solid var(--ln);gap:8px;font-size:13px}
+.lr:last-child{border-bottom:none}.lr.z{opacity:.42}
+.lrn{color:var(--ink)}.lrs{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink3);margin-top:2px}
+.lrc{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink3)}
+.lra{text-align:right;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--ink)}
+.lrz{text-align:right;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink3)}
+.tp3{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;padding:1px 6px;border-radius:20px;background:var(--tlt);color:var(--teal);margin-left:4px}
+.fp2{font-size:10px;padding:1px 6px;border-radius:20px;background:var(--alt);color:var(--amr)}
+.sd{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+.sda{background:var(--tlt);color:var(--teal)}.sda .dot{background:var(--tm)}
+.sdo{background:var(--rlt);color:var(--red)}.sdo .dot{background:var(--rm)}
+.sdp{background:var(--alt);color:var(--amr)}.sdp .dot{background:var(--am)}
+.sdk{background:#E6F9F1;color:#065F3C}.sdk .dot{background:#0F9B5A}
+.ntm{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--ln)}
+.ntm:last-child{border-bottom:none}
+.nav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.nmeta{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.nau{font-weight:600;font-size:13px;color:var(--ink)}
+.ntx{font-size:11px;color:var(--ink3);font-family:"JetBrains Mono",monospace}
+.nrl{font-size:10px;padding:1px 7px;border-radius:20px;font-weight:600}
+.ntxt{font-size:13px;color:var(--ink2);line-height:1.55}
+.np{background:var(--sur);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.nph{display:flex;align-items:center;justify-content:space-between;padding:12px 1.25rem;background:var(--paper);border-bottom:1px solid var(--ln)}
+.npt{font-weight:600;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.npb{display:grid;grid-template-columns:1fr 1fr}
+.npf{padding:9px 1.25rem;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln)}
+.npf:nth-child(even){border-right:none}.npf:nth-last-child(-n+2){border-bottom:none}
+.npfl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.npfv{font-size:13px;color:var(--ink);font-family:"JetBrains Mono",monospace}
+.dr{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--ln);font-size:13px;cursor:pointer}
+.dr:hover{background:var(--paper)}.dr:last-child{border-bottom:none}
+.di{width:30px;height:30px;border-radius:var(--rs);background:var(--paper);border:1px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0}
+.dn{flex:1;color:var(--ink);font-weight:500}.dm{font-size:11px;color:var(--ink3);font-family:"JetBrains Mono",monospace;white-space:nowrap}
+.sh2{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--paper);border:1px solid var(--ln);border-radius:var(--rs) var(--rs) 0 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink)}
+.sb3{border:1px solid var(--ln);border-top:none;border-radius:0 0 var(--rs) var(--rs);overflow:hidden}
+.ops{display:none}
 </style>
+</head>
+<body>
 
-<!-- ══ SCREEN: LOGIN ══ -->
-<div id="screen-login" class="screen active">
-  <div class="login-wrap">
-    <div class="login-logo">NHC <span>Portal</span></div>
-    <div class="login-tagline">BILLING · SERVICES · OPERATIONS</div>
-    <div class="login-heading">Sign in</div>
-    <div class="login-sub">Access your account or internal dashboard</div>
-
-    <label class="field-label">Email address</label>
-    <input class="login-input" type="email" placeholder="you@example.com" value="admin@nhc.com">
-
-    <label class="field-label">Password</label>
-    <input class="login-input" type="password" placeholder="••••••••" value="••••••••">
-
-    <label class="field-label" style="margin-bottom:10px">Sign in as</label>
-    <div class="role-grid">
-      <div class="role-btn" onclick="selectRole('customer',this)">
-        <div class="role-dot" style="background:#2563C4"></div>
-        Customer
-      </div>
-      <div class="role-btn selected" onclick="selectRole('ops',this)">
-        <div class="role-dot" style="background:#0F7B5A"></div>
-        Ops
-      </div>
-      <div class="role-btn" onclick="selectRole('oss',this)">
-        <div class="role-dot" style="background:#7C3ABA"></div>
-        OSS Admin
-      </div>
-    </div>
-
-    <button class="login-btn" onclick="doLogin()">Continue</button>
-  </div>
+<!-- LOGIN -->
+<div id="sl" class="scr on">
+<div class="lc">
+<div class="ll">NHC <em>Portal</em></div>
+<div class="lt">Billing · Services · Operations</div>
+<label class="lb">Email</label>
+<input class="li" type="email" placeholder="you@nhcgrp.com" value="ops@nhcgrp.com">
+<label class="lb">Password</label>
+<input class="li" type="password" value="••••••••">
+<label class="lb" style="margin-bottom:10px">Role</label>
+<div class="rr">
+<button class="ro" onclick="pickRole('customer',this)"><div class="rd" style="background:#2563C4"></div>Customer</button>
+<button class="ro on" onclick="pickRole('ops',this)"><div class="rd" style="background:#0A6E52"></div>Ops</button>
+<button class="ro" onclick="pickRole('oss',this)"><div class="rd" style="background:#7C3AED"></div>OSS Admin</button>
+</div>
+<button class="lsub" onclick="login()">Sign in</button>
+</div>
 </div>
 
-<!-- ══ SCREEN: APP ══ -->
-<div id="screen-app" class="screen">
-
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="sidebar-logo">NHC <span>Portal</span></div>
-
-    <div class="sidebar-section">Main</div>
-    <div class="nav-item active" onclick="navTo('dashboard',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
-      Dashboard
-    </div>
-    <div class="nav-item" onclick="navTo('accounts',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5"/></svg>
-      Accounts
-      <span class="nav-badge" id="acct-count">3</span>
-    </div>
-
-    <div class="sidebar-section">Billing</div>
-    <div class="nav-item" onclick="navTo('billing',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
-      Billing detail
-    </div>
-    <div class="nav-item" onclick="navTo('disputes',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1L9.8 5.5H14.5L10.7 8.3L12.1 13L8 10.2L3.9 13L5.3 8.3L1.5 5.5H6.2L8 1Z"/></svg>
-      Disputes
-      <span class="nav-badge" id="dispute-badge">2</span>
-    </div>
-    <div class="nav-item ops-hidden customer-hidden" onclick="navTo('reports',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13V8M6 13V5M9 13V9M12 13V3"/></svg>
-      Reports
-    </div>
-
-    <div class="sidebar-section ops-hidden customer-hidden">OSS Tools</div>
-    <div class="nav-item ops-hidden customer-hidden" onclick="navTo('services',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
-      Service mgmt
-    </div>
-    <div class="nav-item ops-hidden customer-hidden" onclick="navTo('provisioning',this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h9M2 12h6"/><path d="M13 10l2 2-2 2"/></svg>
-      Provisioning
-    </div>
-
-    <div class="sidebar-section">Support</div>
-    <div class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 10V8M8 6h.01"/></svg>
-      Help
-    </div>
-
-    <div class="sidebar-bottom">
-      <div class="user-chip">
-        <div class="user-avatar" id="sidebar-avatar"></div>
-        <div>
-          <div class="user-name" id="sidebar-name">Loading…</div>
-          <div class="user-role-tag" id="sidebar-role">—</div>
-        </div>
-      </div>
-      <button class="logout-btn" onclick="doLogout()">Sign out</button>
-    </div>
-  </nav>
-
-  <!-- Main -->
-  <div class="main">
-    <div class="topbar">
-      <div id="topbar-title" class="topbar-title">Dashboard</div>
-      <div class="topbar-breadcrumb" id="topbar-crumb"></div>
-      <div class="topbar-right">
-        <input class="search-box" placeholder="Search accounts, circuits…">
-        <div class="topbar-role-chip" id="topbar-chip"></div>
-      </div>
-    </div>
-
-    <div class="content">
-
-      <!-- ── PAGE: DASHBOARD ── -->
-      <div id="page-dashboard" class="page active">
-        <div class="page-heading" id="dash-heading">Dashboard</div>
-        <div class="page-sub" id="dash-sub">Overview across all accounts</div>
-
-        <div class="metrics-row">
-          <div class="metric-card accent">
-            <div class="mc-label">Monthly charges</div>
-            <div class="mc-val" id="dash-total">—</div>
-            <div class="mc-sub">April 2026</div>
-            <div class="mc-delta delta-up" id="dash-delta">+2.3% vs Mar</div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-label">Accounts</div>
-            <div class="mc-val" id="dash-accounts">—</div>
-            <div class="mc-sub" id="dash-accounts-sub">—</div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-label">Open disputes</div>
-            <div class="mc-val">2</div>
-            <div class="mc-sub">1 pending response</div>
-            <div class="mc-delta delta-down">Needs attention</div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-label" id="dash-m4-label">Rental devices</div>
-            <div class="mc-val" id="dash-m4-val">9</div>
-            <div class="mc-sub" id="dash-m4-sub">Active terms</div>
-          </div>
-        </div>
-
-        <div id="dash-alert-area"></div>
-
-        <div class="section-header">
-          <div class="section-title">Accounts</div>
-          <button class="section-action" onclick="navTo('accounts',null)">View all →</button>
-        </div>
-
-        <div class="accounts-table">
-          <div class="atable-head grid-cols-dash">
-            <div>Account ID</div>
-            <div>Name</div>
-            <div>Status</div>
-            <div>Services</div>
-            <div>Monthly</div>
-            <div>Since</div>
-            <div></div>
-          </div>
-          <div class="atable-row grid-cols-dash" onclick="openAccount()">
-            <div class="acct-id-cell">60200</div>
-            <div><div class="acct-name-cell">NHC Managed Stack</div><div class="acct-name-sub">Milford, MA</div></div>
-            <div><span class="status-pill status-active"><span class="status-dot"></span>Active</span></div>
-            <div class="services-cell">
-              <span class="svc-tag tag-net">NET</span>
-              <span class="svc-tag tag-sec">SEC</span>
-              <span class="svc-tag tag-voi">VOI</span>
-              <span class="svc-tag tag-pot">POTS</span>
-            </div>
-            <div class="amt-cell">$745.69</div>
-            <div class="amt-cell muted">Aug 2025</div>
-            <div class="arrow-cell">›</div>
-          </div>
-          <div class="atable-row grid-cols-dash">
-            <div class="acct-id-cell">60115</div>
-            <div><div class="acct-name-cell">Riverdale Medical Group</div><div class="acct-name-sub">Worcester, MA</div></div>
-            <div><span class="status-pill status-active"><span class="status-dot"></span>Active</span></div>
-            <div class="services-cell">
-              <span class="svc-tag tag-voi">VOI</span>
-              <span class="svc-tag tag-sd">SD-WAN</span>
-            </div>
-            <div class="amt-cell">$312.40</div>
-            <div class="amt-cell muted">Jan 2025</div>
-            <div class="arrow-cell">›</div>
-          </div>
-          <div class="atable-row grid-cols-dash">
-            <div class="acct-id-cell">59872</div>
-            <div><div class="acct-name-cell">Harborview Dental</div><div class="acct-name-sub">Boston, MA</div></div>
-            <div><span class="status-pill status-pending"><span class="status-dot"></span>Dispute open</span></div>
-            <div class="services-cell">
-              <span class="svc-tag tag-pot">POTS</span>
-            </div>
-            <div class="amt-cell">$87.12</div>
-            <div class="amt-cell muted">Mar 2024</div>
-            <div class="arrow-cell">›</div>
-          </div>
-        </div>
-
-        <div class="two-col">
-          <div class="card">
-            <div class="card-title">Recent activity</div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--teal)"></div>
-              <div class="activity-text"><span>60200</span> — 3 new voice seats provisioned (774-632-5366–5368)</div>
-              <div class="activity-time">2 mo ago</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--blue)"></div>
-              <div class="activity-text"><span>59872</span> — Dispute filed on MRP charge ($3.17)</div>
-              <div class="activity-time">3 wk ago</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--purple)"></div>
-              <div class="activity-text"><span>60200</span> — FortiGate managed firewall added to security suite</div>
-              <div class="activity-time">8 mo ago</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--teal)"></div>
-              <div class="activity-text"><span>60115</span> — SD-WAN circuit activated</div>
-              <div class="activity-time">14 mo ago</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">Upcoming</div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--warn)"></div>
-              <div class="activity-text">60200 — POTS 12mo term renewal</div>
-              <div class="activity-time">May 2026</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--text-3)"></div>
-              <div class="activity-text">60200 — Peplink 36mo rental ends</div>
-              <div class="activity-time">Aug 2028</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--text-3)"></div>
-              <div class="activity-text">60115 — SD-WAN 24mo term ends</div>
-              <div class="activity-time">Jan 2027</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── PAGE: BILLING DETAIL ── -->
-      <div id="page-billing" class="page">
-        <div class="back-btn" onclick="navTo('dashboard',null)">‹ Dashboard</div>
-        <div class="acct-hero">
-          <div class="acct-hero-icon">60<br>200</div>
-          <div class="acct-hero-info">
-            <div class="acct-hero-id">ACCOUNT · APRIL 2026</div>
-            <div class="acct-hero-name">NHC Managed Stack</div>
-            <div class="acct-hero-tags">
-              <span class="svc-tag tag-net">Networking</span>
-              <span class="svc-tag tag-sec">Security</span>
-              <span class="svc-tag tag-voi">Voice</span>
-              <span class="svc-tag tag-pot">POTS</span>
-              <span class="status-pill status-active" style="font-size:11px;padding:2px 8px"><span class="status-dot"></span>Active</span>
-            </div>
-          </div>
-          <div class="acct-hero-actions" id="hero-actions">
-            <!-- populated by role -->
-          </div>
-        </div>
-
-        <div class="detail-metrics">
-          <div class="dm-card">
-            <div class="dm-label">Monthly</div>
-            <div class="dm-val">$745.69</div>
-            <div class="dm-sub">Billable</div>
-          </div>
-          <div class="dm-card">
-            <div class="dm-label">Lifetime billed</div>
-            <div class="dm-val">$4,836</div>
-            <div class="dm-sub">All items</div>
-          </div>
-          <div class="dm-card">
-            <div class="dm-label">Circuits</div>
-            <div class="dm-val">7</div>
-            <div class="dm-sub">ANIs active</div>
-          </div>
-          <div class="dm-card">
-            <div class="dm-label">Devices</div>
-            <div class="dm-val">9</div>
-            <div class="dm-sub">On rental</div>
-          </div>
-          <div class="dm-card">
-            <div class="dm-label">Oldest item</div>
-            <div class="dm-val">23 mo</div>
-            <div class="dm-sub">Since May 2024</div>
-          </div>
-        </div>
-
-        <div class="billing-tabs">
-          <div class="billing-tab active" onclick="switchTab('charges',this)">Charges</div>
-          <div class="billing-tab" onclick="switchTab('circuits',this)">Circuits</div>
-          <div class="billing-tab" onclick="switchTab('disputes-tab',this)">Disputes <span style="font-family:'DM Mono';font-size:11px;background:var(--warn-bg);color:var(--warn);padding:1px 6px;border-radius:20px;margin-left:4px">2</span></div>
-          <div class="billing-tab ops-tab-item customer-hidden" onclick="switchTab('notes-tab',this)">Ops notes</div>
-        </div>
-
-        <!-- TAB: CHARGES -->
-        <div id="tab-charges" class="billing-tab-content active">
-
-          <!-- MGDSTACK -->
-          <div class="btn-block">
-            <div class="btn-head" onclick="toggleBlock('blk-mgd','exp-mgd')">
-              <div class="btn-icon-box" style="background:var(--teal-bg);color:var(--teal-text)">NET</div>
-              <div class="btn-info-wrap">
-                <div class="btn-eyebrow">BTN <span class="svc-tag tag-net" style="font-size:10px">Networking</span></div>
-                <div class="btn-id-text">60200MGDSTACK</div>
-                <div class="btn-desc-text">Managed connectivity, wireless backup &amp; monitoring</div>
-              </div>
-              <div class="btn-right">
-                <div class="btn-monthly">$267.65</div>
-                <div class="btn-monthly-label">/ month</div>
-              </div>
-              <div class="btn-expand open" id="exp-mgd">›</div>
-            </div>
-            <div id="blk-mgd">
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:var(--teal)"></div>
-                  <span class="ani-label-text">ANI · Circuit</span>
-                  <span class="ani-id-text">5082697031</span>
-                  <span class="svc-tag tag-net" style="margin-left:8px;font-size:10px">Wireless backup</span>
-                  <span class="ani-subtotal">$49.80 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">4G LTE backup</div><div class="lr-sub">Verizon Wireless · 4G1GWB037</div></div>
-                  <div class="lr-code">4G1GWB037</div>
-                  <div class="lr-amt">$21.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">5G backup device rental <span class="term-pill">36mo</span></div><div class="lr-sub">Peplink · D413F86E71C0 · PMBRI5GR</div></div>
-                  <div class="lr-code">PMBRI5GR</div>
-                  <div class="lr-amt">$14.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">StackGuard proactive monitoring</div><div class="lr-sub">New Horizons · STACKSG-1</div></div>
-                  <div class="lr-code">STACKSG-1</div>
-                  <div class="lr-amt">$9.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Peplink MAX BR1 support <span class="term-pill">36mo</span></div><div class="lr-sub">NHC00093640A · PMBR112</div></div>
-                  <div class="lr-code">PMBR112</div>
-                  <div class="lr-amt">$2.95</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Wireless overage / Static IP / Customer IP</div>
-                  <div class="lr-code">various</div>
-                  <div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:var(--teal)"></div>
-                  <span class="ani-label-text">ANI · Circuit</span>
-                  <span class="ani-id-text">60200CAMMINT001</span>
-                  <span class="svc-tag tag-net" style="margin-left:8px;font-size:10px">Managed BW</span>
-                  <span class="ani-subtotal">$29.95 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Managed customer-supplied bandwidth</div><div class="lr-sub">Carrier Access Mgmt · IPCTCAM</div></div>
-                  <div class="lr-code">IPCTCAM</div>
-                  <div class="lr-amt">$29.95</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Customer-supplied IP</div>
-                  <div class="lr-code">IPADDCAM</div>
-                  <div class="lr-zero">$0.00</div>
-                </div>
-                <div class="line-row zero-line ops-only-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">StackGuard monitoring <span class="flag-pill">⚠ dup of 4651611</span></div><div class="lr-sub">Item 4719952 · STACKSG-1</div></div>
-                  <div class="lr-code">STACKSG-1</div>
-                  <div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:#888"></div>
-                  <span class="ani-label-text">BTN-level charges</span>
-                  <span class="ani-id-text">60200MGDSTACK</span>
-                  <span class="ani-subtotal">$38.64 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Interstate recovery</div>
-                  <div class="lr-code">ICCRC</div>
-                  <div class="lr-amt">$28.98</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Maint &amp; repair program</div>
-                  <div class="lr-code">MRP</div>
-                  <div class="lr-amt">$9.66</div>
-                </div>
-              </div>
-              <div class="oss-only-row oss-action-row hidden">
-                <span class="oss-action-label">OSS actions for BTN 60200MGDSTACK</span>
-                <button class="btn oss-only" style="font-size:12px;padding:5px 10px">+ Add item</button>
-                <button class="btn" style="font-size:12px;padding:5px 10px">Override charge</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECURITY -->
-          <div class="btn-block">
-            <div class="btn-head" onclick="toggleBlock('blk-sec','exp-sec')">
-              <div class="btn-icon-box" style="background:var(--purple-bg);color:var(--purple-text)">SEC</div>
-              <div class="btn-info-wrap">
-                <div class="btn-eyebrow">ANI · Circuit <span class="svc-tag tag-sec" style="font-size:10px">Security</span></div>
-                <div class="btn-id-text">60200SECURITY</div>
-                <div class="btn-desc-text">Fortinet managed firewall, switching &amp; WiFi suite</div>
-              </div>
-              <div class="btn-right">
-                <div class="btn-monthly">$270.55</div>
-                <div class="btn-monthly-label">/ month</div>
-              </div>
-              <div class="btn-expand open" id="exp-sec">›</div>
-            </div>
-            <div id="blk-sec">
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:var(--purple)"></div>
-                  <span class="ani-label-text">Circuit</span>
-                  <span class="ani-id-text">60200SECURITY</span>
-                  <span class="svc-tag tag-sec" style="margin-left:8px;font-size:10px">Fortinet suite</span>
-                  <span class="ani-subtotal">$270.55 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiGate managed small firewall</div><div class="lr-sub">Fortinet · MGDFNSM</div></div>
-                  <div class="lr-code">MGDFNSM</div><div class="lr-amt">$99.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiSwitch 24F rental <span class="term-pill">36mo</span></div><div class="lr-sub">0401A1C88014 · FN24PTPOER</div></div>
-                  <div class="lr-code">FN24PTPOER</div><div class="lr-amt">$44.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiSwitch managed medium</div><div class="lr-sub">MGDFNSWMD</div></div>
-                  <div class="lr-code">MGDFNSWMD</div><div class="lr-amt">$33.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiGate 40F UTP 3YR <span class="term-pill">36mo</span></div><div class="lr-sub">NHC00088603A · FN40FTP36</div></div>
-                  <div class="lr-code">FN40FTP36</div><div class="lr-amt">$23.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiAP managed WiFi 3 <span class="term-pill">36mo</span></div><div class="lr-sub">MGDFNAP3</div></div>
-                  <div class="lr-code">MGDFNAP3</div><div class="lr-amt">$19.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiGate 40F rental <span class="term-pill">36mo</span></div><div class="lr-sub">0401A1227E80 · FN40FR</div></div>
-                  <div class="lr-code">FN40FR</div><div class="lr-amt">$13.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiSwitch 124F support 3YR <span class="term-pill">36mo</span></div><div class="lr-sub">NHC00088627A · FN24FF36</div></div>
-                  <div class="lr-code">FN24FF36</div><div class="lr-amt">$11.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiAP 221E rental <span class="term-pill">36mo</span></div><div class="lr-sub">38C0EAFA1F28 · FN221ER</div></div>
-                  <div class="lr-code">FN221ER</div><div class="lr-amt">$10.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiGate 40F cloud manager <span class="term-pill">36mo</span></div><div class="lr-sub">NHC00088613A · FN40F36</div></div>
-                  <div class="lr-code">FN40F36</div><div class="lr-amt">$8.95</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">FortiAP 221E support 3YR <span class="term-pill">36mo</span></div><div class="lr-sub">NHC00088588A · FN221E36</div></div>
-                  <div class="lr-code">FN221E36</div><div class="lr-amt">$2.95</div>
-                </div>
-              </div>
-              <div class="oss-only-row oss-action-row hidden">
-                <span class="oss-action-label">OSS actions for 60200SECURITY</span>
-                <button class="btn oss-only" style="font-size:12px;padding:5px 10px">+ Add item</button>
-                <button class="btn" style="font-size:12px;padding:5px 10px">Override charge</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- NEWVOICE -->
-          <div class="btn-block">
-            <div class="btn-head" onclick="toggleBlock('blk-voi','exp-voi')">
-              <div class="btn-icon-box" style="background:var(--blue-bg);color:var(--blue-text)">VOI</div>
-              <div class="btn-info-wrap">
-                <div class="btn-eyebrow">BTN <span class="svc-tag tag-voi" style="font-size:10px">Voice</span></div>
-                <div class="btn-id-text">60200NEWVOICE</div>
-                <div class="btn-desc-text">newVoice hosted seats, DID assignments &amp; equipment</div>
-              </div>
-              <div class="btn-right">
-                <div class="btn-monthly">$93.36</div>
-                <div class="btn-monthly-label">/ month</div>
-              </div>
-              <div class="btn-expand open" id="exp-voi">›</div>
-            </div>
-            <div id="blk-voi">
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:var(--blue)"></div>
-                  <span class="ani-label-text">ANI · DID</span>
-                  <span class="ani-id-text">508-824-3410</span>
-                  <span class="svc-tag tag-voi" style="margin-left:8px;font-size:10px">Enhanced · seats ×3</span>
-                  <span class="ani-subtotal">$56.47 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">newVoice enhanced DID w/ E911</div><div class="lr-sub">NVE911</div></div>
-                  <div class="lr-code">NVE911</div><div class="lr-amt">$3.50</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Unlimited seat ×3 <span class="term-pill">36mo</span></div><div class="lr-sub">.2401 · .2402 · .2403 · NVHSU</div></div>
-                  <div class="lr-code">NVHSU</div><div class="lr-amt">$32.97</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Polycom VVX 400 rental ×3 <span class="term-pill">36mo</span></div><div class="lr-sub">64167F902DAF · 902DCD · 902F4E</div></div>
-                  <div class="lr-code">RPVX400R</div><div class="lr-amt">$14.97</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Voice mail ×3</div><div class="lr-sub">NVVM</div></div>
-                  <div class="lr-code">NVVM</div><div class="lr-amt">$3.00</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Unrated VOIP usage ×3</div>
-                  <div class="lr-code">U-998-VP</div><div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:var(--blue)"></div>
-                  <span class="ani-label-text">ANI · DID range</span>
-                  <span class="ani-id-text">774-632-5366–5368</span>
-                  <span class="svc-tag tag-voi" style="margin-left:8px;font-size:10px">Standard · Feb 2026</span>
-                  <span class="ani-subtotal">$36.89 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Standard seat package ×3 <span class="term-pill">36mo</span></div><div class="lr-sub">NVHSTD</div></div>
-                  <div class="lr-code">NVHSTD</div><div class="lr-amt">$32.85</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Poly Edge E300 rental ×3 <span class="term-pill">36mo</span></div><div class="lr-sub">482567612728 · 61366A · 613693</div></div>
-                  <div class="lr-code">PEDGEE300R</div><div class="lr-amt">$17.85</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">E911 public safety surcharge ×3</div><div class="lr-sub">E911PSS</div></div>
-                  <div class="lr-code">E911PSS</div><div class="lr-amt">$2.85</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">Poly Edge PSU rental ×3 <span class="term-pill">36mo</span></div><div class="lr-sub">NHC8535S · NHC8550S · NHC8556S</div></div>
-                  <div class="lr-code">PEGEPS3/4R</div><div class="lr-amt">$2.85</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">DID pkg / VM pkg / Zero-rated VOIP ×3</div>
-                  <div class="lr-code">various</div><div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:#888"></div>
-                  <span class="ani-label-text">BTN-level</span>
-                  <span class="ani-id-text">60200NEWVOICE</span>
-                  <span class="ani-subtotal">$11.88 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Interstate recovery</div>
-                  <div class="lr-code">ICCRC</div><div class="lr-amt">$8.91</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Maint &amp; repair program</div>
-                  <div class="lr-code">MRP</div><div class="lr-amt">$2.97</div>
-                </div>
-              </div>
-              <div class="oss-only-row oss-action-row hidden">
-                <span class="oss-action-label">OSS actions for BTN 60200NEWVOICE</span>
-                <button class="btn oss-only" style="font-size:12px;padding:5px 10px">+ Add seat</button>
-                <button class="btn oss-only" style="font-size:12px;padding:5px 10px">Remove seat</button>
-                <button class="btn" style="font-size:12px;padding:5px 10px">Override</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- POTS -->
-          <div class="btn-block">
-            <div class="btn-head" onclick="toggleBlock('blk-pot','exp-pot')">
-              <div class="btn-icon-box" style="background:var(--gray-bg);color:var(--gray-text)">POT</div>
-              <div class="btn-info-wrap">
-                <div class="btn-eyebrow">BTN <span class="svc-tag tag-pot" style="font-size:10px">POTS</span></div>
-                <div class="btn-id-text">508-828-2560</div>
-                <div class="btn-desc-text">Legacy business lines with LD · Verizon UNE · 12mo term</div>
-              </div>
-              <div class="btn-right">
-                <div class="btn-monthly">$114.13</div>
-                <div class="btn-monthly-label">/ month</div>
-              </div>
-              <div class="btn-expand open" id="exp-pot">›</div>
-            </div>
-            <div id="blk-pot">
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:#888"></div>
-                  <span class="ani-label-text">ANI · Circuit</span>
-                  <span class="ani-id-text">508-824-2045</span>
-                  <span class="svc-tag tag-pot" style="margin-left:8px;font-size:10px">Verizon UNE · 12mo</span>
-                  <span class="ani-subtotal">$57.70 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">12+M business line w/ LD <span class="term-pill">12mo</span></div><div class="lr-sub">12+1MBSLD</div></div>
-                  <div class="lr-code">12+1MBSLD</div><div class="lr-amt">$43.97</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">FCC line charge</div><div class="lr-code">EUCL</div><div class="lr-amt">$8.99</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">PICC</div><div class="lr-code">PICC</div><div class="lr-amt">$3.75</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">LNP</div><div class="lr-code">LNPPOTS</div><div class="lr-amt">$0.99</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">LD bundle / Local / LD usage</div><div class="lr-code">various</div><div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:#888"></div>
-                  <span class="ani-label-text">ANI · Circuit</span>
-                  <span class="ani-id-text">508-828-2560</span>
-                  <span class="svc-tag tag-pot" style="margin-left:8px;font-size:10px">Verizon UNE · 12mo</span>
-                  <span class="ani-subtotal">$57.70 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div><div class="lr-name">12+M business line w/ LD <span class="term-pill">12mo</span></div><div class="lr-sub">12+1MBSLD</div></div>
-                  <div class="lr-code">12+1MBSLD</div><div class="lr-amt">$43.97</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">FCC line charge</div><div class="lr-code">EUCL</div><div class="lr-amt">$8.99</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">PICC</div><div class="lr-code">PICC</div><div class="lr-amt">$3.75</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">LNP</div><div class="lr-code">LNPPOTS</div><div class="lr-amt">$0.99</div>
-                </div>
-                <div class="line-row zero-line" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">LD bundle / Local / LD usage</div><div class="lr-code">various</div><div class="lr-zero">$0.00</div>
-                </div>
-              </div>
-              <div class="ani-group">
-                <div class="ani-head">
-                  <div class="ani-pulse" style="background:#888"></div>
-                  <span class="ani-label-text">BTN-level</span>
-                  <span class="ani-id-text">508-828-2560</span>
-                  <span class="ani-subtotal">$12.69 / mo</span>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Interstate recovery</div><div class="lr-code">ICCRC</div><div class="lr-amt">$9.52</div>
-                </div>
-                <div class="line-row" style="grid-template-columns:minmax(0,1fr) 90px 70px">
-                  <div class="lr-name">Maint &amp; repair program</div><div class="lr-code">MRP</div><div class="lr-amt">$3.17</div>
-                </div>
-              </div>
-              <div class="oss-only-row oss-action-row hidden">
-                <span class="oss-action-label">OSS actions for BTN 508-828-2560</span>
-                <button class="btn oss-only" style="font-size:12px;padding:5px 10px">+ Add line</button>
-                <button class="btn" style="font-size:12px;padding:5px 10px">Term date</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: CIRCUITS -->
-        <div id="tab-circuits" class="billing-tab-content">
-          <div class="circuit-panel">
-            <div class="cp-head">
-              <div class="cp-title">Circuit inventory — account 60200</div>
-              <span class="status-pill status-active"><span class="status-dot"></span>7 active</span>
-            </div>
-            <div class="cp-body">
-              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-net">NET</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">5082697031</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Wireless backup</div></div>
-                    <div><div class="cp-field-label">Carrier</div><div class="cp-field-val">Verizon Wireless</div></div>
-                    <div><div class="cp-field-label">MAC</div><div class="cp-field-val">D413F86E71C0</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">08-28-2025</div></div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-net">NET</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">60200CAMMINT001</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Managed BW</div></div>
-                    <div><div class="cp-field-label">Carrier</div><div class="cp-field-val">Carrier Access Mgmt</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">08-28-2025</div></div>
-                    <div><div class="cp-field-label">Monthly</div><div class="cp-field-val">$29.95</div></div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-sec">SEC</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">60200SECURITY</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Fortinet suite</div></div>
-                    <div><div class="cp-field-label">Devices</div><div class="cp-field-val">5 on rental</div></div>
-                    <div><div class="cp-field-label">FW MAC</div><div class="cp-field-val">0401A1227E80</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">08-28-2025</div></div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-voi">VOI</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">508-824-3410</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Enhanced DID</div></div>
-                    <div><div class="cp-field-label">Seats</div><div class="cp-field-val">3 (.2401–.2403)</div></div>
-                    <div><div class="cp-field-label">Phones</div><div class="cp-field-val">Polycom VVX 400</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">05-14-2024</div></div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-voi">VOI</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">774-632-5366–5368</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Standard DID range</div></div>
-                    <div><div class="cp-field-label">Seats</div><div class="cp-field-val">3</div></div>
-                    <div><div class="cp-field-label">Phones</div><div class="cp-field-val">Poly Edge E300</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">02-13-2026</div></div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                    <span class="svc-tag tag-pot">POTS</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)">508-824-2045 · 508-828-2560</span>
-                  </div>
-                  <div class="cp-grid" style="grid-template-columns:1fr 1fr">
-                    <div><div class="cp-field-label">Type</div><div class="cp-field-val">Business w/ LD</div></div>
-                    <div><div class="cp-field-label">Carrier</div><div class="cp-field-val">Verizon UNE</div></div>
-                    <div><div class="cp-field-label">Term</div><div class="cp-field-val">12mo · May 2026</div></div>
-                    <div><div class="cp-field-label">Start date</div><div class="cp-field-val">05-14-2024</div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: DISPUTES -->
-        <div id="tab-disputes-tab" class="billing-tab-content">
-          <div class="card" style="margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-              <div class="card-title" style="margin:0">Open disputes</div>
-              <button class="btn primary" id="new-dispute-btn">+ File dispute</button>
-            </div>
-            <div class="dispute-row">
-              <div>
-                <div class="dispute-num">#DSP-00412</div>
-                <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text-3)">Filed 3 wk ago</div>
-              </div>
-              <div class="dispute-desc">
-                <div>MRP charge on BTN 508-828-2560</div>
-                <div class="dispute-sub">Charge $3.17 — customer states service was not active for full period. Requesting credit for 2 weeks.</div>
-              </div>
-              <div class="dispute-status"><span class="status-pill status-pending"><span class="status-dot"></span>Pending ops</span></div>
-            </div>
-            <div class="dispute-row">
-              <div>
-                <div class="dispute-num">#DSP-00398</div>
-                <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text-3)">Filed 6 wk ago</div>
-              </div>
-              <div class="dispute-desc">
-                <div>Interstate recovery — ICCRC duplicate</div>
-                <div class="dispute-sub">ICCRC billed on both BTN and ANI level for same period. Requesting removal of BTN-level duplicate.</div>
-              </div>
-              <div class="dispute-status"><span class="status-pill status-active"><span class="status-dot"></span>In review</span></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">Resolved (last 90 days)</div>
-            <div class="dispute-row">
-              <div><div class="dispute-num">#DSP-00381</div></div>
-              <div class="dispute-desc">
-                <div style="color:var(--text-2)">FortiAP overage charge — resolved</div>
-                <div class="dispute-sub">Credit of $19.95 applied April 1, 2026</div>
-              </div>
-              <div><span class="status-pill" style="background:var(--gray-bg);color:var(--gray-text)"><span class="status-dot" style="background:#888"></span>Closed</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB: OPS NOTES (ops/oss only) -->
-        <div id="tab-notes-tab" class="billing-tab-content">
-          <div class="card" style="margin-bottom:1.25rem">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-              <div class="card-title" style="margin:0">Internal notes</div>
-              <button class="btn ops-only" style="border-color:var(--teal);color:var(--teal-text);background:var(--teal-bg)">+ Add note</button>
-            </div>
-            <div class="note-row">
-              <div class="note-meta">
-                <div class="note-author">Sarah Chen</div>
-                <span class="note-role-badge" style="background:var(--teal-bg);color:var(--teal-text)">Ops</span>
-                <div class="note-time">Apr 7, 2026</div>
-              </div>
-              <div class="note-body">Confirmed StackGuard duplicate (item 4719952 on 60200CAMMINT001) — billing correctly zeroed out. Item was added during the CAM activation in error. No credit needed; customer was not charged. Flagged for OSS to remove on next billing cycle.</div>
-            </div>
-            <div class="note-row">
-              <div class="note-meta">
-                <div class="note-author">Mike Torres</div>
-                <span class="note-role-badge" style="background:var(--purple-bg);color:var(--purple-text)">OSS</span>
-                <div class="note-time">Feb 13, 2026</div>
-              </div>
-              <div class="note-body">Provisioned 3 new newVoice Standard seats on 774-632-5366–5368. Poly Edge E300 devices shipped (NHC8535S, NHC8550S, NHC8556S). 36mo term started. Confirmed E911 registration complete.</div>
-            </div>
-            <div class="note-row">
-              <div class="note-meta">
-                <div class="note-author">Sarah Chen</div>
-                <span class="note-role-badge" style="background:var(--teal-bg);color:var(--teal-text)">Ops</span>
-                <div class="note-time">Aug 28, 2025</div>
-              </div>
-              <div class="note-body">MGDSTACK activation complete. Peplink BR1 online (D413F86E71C0), FortiGate 40F active (0401A1227E80). StackGuard confirmed monitoring. POTS BTN migration from legacy account completed same day.</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ── PAGE: ACCOUNTS ── -->
-      <div id="page-accounts" class="page">
-        <div class="page-heading">All accounts</div>
-        <div class="page-sub" id="accounts-sub">3 accounts across your portfolio</div>
-        <div class="accounts-table">
-          <div class="atable-head grid-cols-dash">
-            <div>Account ID</div><div>Name</div><div>Status</div><div>Services</div><div>Monthly</div><div>Since</div><div></div>
-          </div>
-          <div class="atable-row grid-cols-dash" onclick="openAccount()">
-            <div class="acct-id-cell">60200</div>
-            <div><div class="acct-name-cell">NHC Managed Stack</div><div class="acct-name-sub">Milford, MA</div></div>
-            <div><span class="status-pill status-active"><span class="status-dot"></span>Active</span></div>
-            <div class="services-cell"><span class="svc-tag tag-net">NET</span><span class="svc-tag tag-sec">SEC</span><span class="svc-tag tag-voi">VOI</span><span class="svc-tag tag-pot">POTS</span></div>
-            <div class="amt-cell">$745.69</div><div class="amt-cell muted">Aug 2025</div><div class="arrow-cell">›</div>
-          </div>
-          <div class="atable-row grid-cols-dash">
-            <div class="acct-id-cell">60115</div>
-            <div><div class="acct-name-cell">Riverdale Medical Group</div><div class="acct-name-sub">Worcester, MA</div></div>
-            <div><span class="status-pill status-active"><span class="status-dot"></span>Active</span></div>
-            <div class="services-cell"><span class="svc-tag tag-voi">VOI</span><span class="svc-tag tag-sd">SD-WAN</span></div>
-            <div class="amt-cell">$312.40</div><div class="amt-cell muted">Jan 2025</div><div class="arrow-cell">›</div>
-          </div>
-          <div class="atable-row grid-cols-dash">
-            <div class="acct-id-cell">59872</div>
-            <div><div class="acct-name-cell">Harborview Dental</div><div class="acct-name-sub">Boston, MA</div></div>
-            <div><span class="status-pill status-pending"><span class="status-dot"></span>Dispute open</span></div>
-            <div class="services-cell"><span class="svc-tag tag-pot">POTS</span></div>
-            <div class="amt-cell">$87.12</div><div class="amt-cell muted">Mar 2024</div><div class="arrow-cell">›</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── PAGE: DISPUTES (top-level) ── -->
-      <div id="page-disputes" class="page">
-        <div class="page-heading">Disputes</div>
-        <div class="page-sub">All open and recent disputes across accounts</div>
-        <div class="alert-bar alert-warn" style="margin-bottom:1.25rem">
-          ⚠ 2 disputes require attention — 1 pending ops response
-        </div>
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-            <div class="card-title" style="margin:0">Active disputes</div>
-            <button class="btn primary" id="new-dispute-btn2">+ File dispute</button>
-          </div>
-          <div class="dispute-row">
-            <div><div class="dispute-num">#DSP-00412</div><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text-3)">Acct 59872</div></div>
-            <div class="dispute-desc"><div>MRP charge — Harborview Dental</div><div class="dispute-sub">$3.17 · Pending ops response</div></div>
-            <div><span class="status-pill status-pending"><span class="status-dot"></span>Pending</span></div>
-          </div>
-          <div class="dispute-row">
-            <div><div class="dispute-num">#DSP-00398</div><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text-3)">Acct 60200</div></div>
-            <div class="dispute-desc"><div>ICCRC duplicate — NHC Managed Stack</div><div class="dispute-sub">In review by ops</div></div>
-            <div><span class="status-pill status-active"><span class="status-dot"></span>In review</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── PAGE: REPORTS ── -->
-      <div id="page-reports" class="page">
-        <div class="page-heading">Reports</div>
-        <div class="page-sub">Export and scheduled reporting</div>
-        <div class="card"><div class="card-title">Available reports</div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--teal)"></div><div class="activity-text">Monthly billing summary — all accounts</div><button class="btn" style="padding:5px 12px;font-size:12px">Export CSV</button></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--blue)"></div><div class="activity-text">Circuit inventory report</div><button class="btn" style="padding:5px 12px;font-size:12px">Export CSV</button></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--purple)"></div><div class="activity-text">Rental device terms report</div><button class="btn" style="padding:5px 12px;font-size:12px">Export CSV</button></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--warn)"></div><div class="activity-text">Upcoming term renewals (90 days)</div><button class="btn" style="padding:5px 12px;font-size:12px">Export PDF</button></div>
-        </div>
-      </div>
-
-      <!-- ── PAGE: SERVICE MGMT ── -->
-      <div id="page-services" class="page">
-        <div class="page-heading">Service management</div>
-        <div class="page-sub">Add, modify or remove services across accounts</div>
-        <div class="card"><div class="card-title">OSS service catalog</div>
-          <div class="alert-bar alert-info">OSS Admin access — full service management enabled</div>
-          <div style="margin-top:1rem;color:var(--text-2);font-size:13px">Service catalog and provisioning flows coming in next sprint.</div>
-        </div>
-      </div>
-
-      <!-- ── PAGE: PROVISIONING ── -->
-      <div id="page-provisioning" class="page">
-        <div class="page-heading">Provisioning</div>
-        <div class="page-sub">Active orders and provisioning queue</div>
-        <div class="card"><div class="card-title">Provisioning queue</div>
-          <div style="color:var(--text-2);font-size:13px">No active orders in queue.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+<!-- APP -->
+<div id="sa" class="scr">
+<!-- SIDEBAR -->
+<nav class="sb">
+<div class="sbt">
+<div class="sbl">NHC <em>Portal</em></div>
+<div class="sba"><div class="sbai">CORP · 778122</div><div class="sban">Hannoush Jewelers Inc</div><div class="sbas">60200 — Raynham MA (primary)</div></div>
 </div>
+<div class="sbs">Overview</div>
+<div class="nl on" onclick="go('pd',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>Dashboard</div>
+<div class="nl" onclick="go('ploc',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="5.5" r="2.5"/><path d="M2 12c0-2.76 2.24-4.5 5-4.5s5 1.74 5 4.5"/></svg>Locations<span class="nb">51</span></div>
+<div class="sbs">Services</div>
+<div class="nl" onclick="go('psol',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="12" height="6" rx="1.5"/><path d="M4 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>Solutions<span class="nb">4</span></div>
+<div class="nl" onclick="go('pld',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1l1.6 4H13L9.2 7.5l1.4 4.3L7 9.2l-3.6 2.6 1.4-4.3L1 5h4.4L7 1z"/></svg>Location detail</div>
+<div class="nl" onclick="go('pinv',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M5 3V2h4v1"/></svg>Inventory</div>
+<div class="nl" onclick="go('ptns',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3-2 1.5a8 8 0 003.5 3.5L10 8l3 1v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone numbers</div>
+<div class="nl" onclick="go('pnet',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/><path d="M1.5 7h11M7 1.5A8.5 8.5 0 017 12.5M7 1.5A8.5 8.5 0 007 12.5"/></svg>Network</div>
+<div class="nl" onclick="go('pdlr',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="12" height="8" rx="1"/><path d="M5 7h4M7 5v4"/></svg>DLR</div>
+<div class="sbs">Billing</div>
+<div class="nl" onclick="go('pbil',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="12" height="10" rx="1.5"/><path d="M4 6h6M4 9h4"/></svg>Billing detail</div>
+<div class="nl" onclick="go('pord',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h8l2 3H1l2-3zM1 5v6a1 1 0 001 1h10a1 1 0 001-1V5"/></svg>Orders</div>
+<div class="nl" onclick="go('ptix',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/><path d="M7 5v2.5M7 9.5h.01"/></svg>Tickets</div>
+<div class="sbs">Files &amp; Comms</div>
+<div class="nl" onclick="go('pdoc',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1h6l3 3v9H3V1z"/><path d="M9 1v3h3"/></svg>Documents</div>
+<div class="nl" onclick="go('pnot',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1a4 4 0 014 4v3l1.5 2h-11L3 8V5a4 4 0 014-4z"/><path d="M5.5 10.5a1.5 1.5 0 003 0"/></svg>Notifications</div>
+<div class="nl ops" onclick="go('pnotes',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h10v7H8l-3 3V9H2V2z"/></svg>Notes</div>
+<div class="sbs ops">OSS / Finance</div>
+<div class="nl ops" onclick="go('pfin',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v12M4 4.5C4 3.12 5.34 2 7 2s3 1.12 3 2.5c0 1.6-3 2.5-3 4 0 1.38 1.34 2.5 3 2.5s3-1.12 3-2.5"/></svg>Finance</div>
+<div class="nl ops" onclick="go('pbom',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h10M2 7h7M2 10h5"/><path d="M11 8l2 2-3 3"/></svg>Bill-O-Matic</div>
+<div class="nl ops" onclick="go('pship',this)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 3h9v7H1zM10 5l3 1v4h-3"/><circle cx="3.5" cy="11" r="1"/><circle cx="8.5" cy="11" r="1"/></svg>Shipments</div>
+<div class="sbb">
+<div class="urow"><div class="uav" id="uav"></div><div><div class="unm" id="unm">—</div><div class="url" id="url">—</div></div></div>
+<button class="sout" onclick="logout()">Sign out</button>
+</div>
+</nav>
+<!-- MAIN -->
+<div class="mn">
+<div class="topb">
+<div class="ttt" id="ttt">Dashboard</div>
+<div class="tcr" id="tcr"></div>
+<div class="tr"><input class="ts" placeholder="Search locations, TNs, orders…"><div class="rc" id="rchip"></div></div>
+</div>
+<div class="ctn">
+
+<!-- DASHBOARD -->
+<div id="pd" class="pg on">
+<div class="ph">Good morning</div>
+<div class="ps">Hannoush Jewelers Inc · Corp 778122 · 60200 primary location</div>
+<div id="dalerts"></div>
+<div class="sg sg4">
+<div class="stc dk"><div class="stl">Monthly billing</div><div class="stv" id="dmrc">$9,804</div><div class="sts">April 2026 · 14 billing locations</div></div>
+<div class="stc"><div class="stl">Locations</div><div class="stv">51</div><div class="sts">14 billing · 6 open CC orders</div></div>
+<div class="stc"><div class="stl">Active solutions</div><div class="stv">4</div><div class="sts">Security · Voice · Wireless · POTS</div></div>
+<div class="stc"><div class="stl" id="ds4l">Open tickets</div><div class="stv" id="ds4v">0</div><div class="sts" id="ds4s">Cust Svc + Svc Assurance</div></div>
+</div>
+<div class="ch">
+<div class="chic">HJI</div>
+<div style="flex:1">
+<div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ink3);margin-bottom:2px">CORPORATE · 778122</div>
+<div style="font-family:'Instrument Serif',serif;font-size:20px;letter-spacing:-.02em;margin-bottom:6px">Hannoush Jewelers Inc</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+<span class="chip ct">Corp Billing</span><span class="chip cs">Billing Cycle A</span><span class="chip cb">MetaSwitch</span><span class="chip ca">POTS renewal May 2026</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+<div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">Channel Mgr</div><div style="font-size:13px;font-weight:500">Chris Fuhry</div></div>
+<div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">Agent</div><div style="font-size:13px;font-weight:500">AmpliX · Katie Trombetta</div></div>
+<div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">Main Contact</div><div style="font-size:13px;font-weight:500">Gary Savard · (413) 439-2860</div></div>
+<div><div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px">Last Billed</div><div style="font-size:13px;font-weight:500">04-01-2026 · $718.86 primary</div></div>
+</div>
+</div>
+<div id="dheroact" style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0"></div>
+</div>
+<div class="sg sg2">
+<div class="cd">
+<div class="cdh"><div class="cdht">Customer stack</div><button class="btn sm" onclick="go('psol',null)">View solutions →</button></div>
+<div class="tw"><table>
+<thead><tr><th>Service</th><th>Layer</th><th>Qty</th><th>MRC</th></tr></thead>
+<tbody>
+<tr><td>Firewall</td><td><span class="chip ct">CPE</span></td><td>1</td><td class="mn2">$99.95</td></tr>
+<tr><td>Poly Phone</td><td><span class="chip ct">CPE</span></td><td>6</td><td class="mn2">$17.85</td></tr>
+<tr><td>POTS</td><td><span class="chip cs">Network</span></td><td>2</td><td class="mn2">$114.13</td></tr>
+<tr><td>Hosted Seat</td><td><span class="chip cb">Overlay</span></td><td>6</td><td class="mn2">$93.36</td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Recent activity</div></div>
+<div style="padding:0 1.25rem">
+<div class="ntm"><div style="width:8px;height:8px;border-radius:50%;background:var(--tm);margin-top:4px;flex-shrink:0"></div><div><div style="font-size:13px;font-weight:500">3 newVoice Standard seats provisioned</div><div style="font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;margin-top:2px">Order 321393 · 02-13-2026</div></div></div>
+<div class="ntm"><div style="width:8px;height:8px;border-radius:50%;background:var(--bm);margin-top:4px;flex-shrink:0"></div><div><div style="font-size:13px;font-weight:500">NHC Security stack activated</div><div style="font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;margin-top:2px">Order 321392 · 08-28-2025</div></div></div>
+<div class="ntm"><div style="width:8px;height:8px;border-radius:50%;background:var(--am);margin-top:4px;flex-shrink:0"></div><div><div style="font-size:13px;font-weight:500">Wireless DIA + StackGuard activated</div><div style="font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;margin-top:2px">Order 343414 · 08-28-2025</div></div></div>
+<div class="ntm" style="border-bottom:none"><div style="width:8px;height:8px;border-radius:50%;background:var(--sm2);margin-top:4px;flex-shrink:0"></div><div><div style="font-size:13px;font-weight:500">Cloud/DR disconnected</div><div style="font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',monospace;margin-top:2px">Order 344702 · 09-16-2025</div></div></div>
+</div>
+</div>
+</div>
+<div class="cd" style="margin-bottom:1.75rem">
+<div class="cdh"><div class="cdht">Upcoming renewals &amp; expirations</div></div>
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>Location</th><th>Type</th><th>Date</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:500">POTS 12mo term — 508-824-2045 &amp; 508-828-2560</td><td>60200 Raynham</td><td><span class="chip ca">Term renewal</span></td><td class="mn2">05-14-2026</td><td><button class="btn sm bam">Review</button></td></tr>
+<tr><td style="font-weight:500">FortiGate UTP 3YR License · NHC00088603A</td><td>60200 Raynham</td><td><span class="chip cs">License exp</span></td><td class="mn2">04-30-2028</td><td><button class="btn sm">View</button></td></tr>
+<tr><td style="font-weight:500">Peplink MAX BR1 Support · NHC00093640A</td><td>60200 Raynham</td><td><span class="chip cs">Support exp</span></td><td class="mn2">08-25-2026</td><td><button class="btn sm">View</button></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- LOCATIONS -->
+<div id="ploc" class="pg">
+<div class="ph">Locations</div>
+<div class="ps">778122 Hannoush Jewelers Inc · 51 total · 14 billing</div>
+<div class="sg" style="grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:1rem">
+<div class="stc dk"><div class="stl">Service MRC</div><div class="stv">$9,804</div><div class="sts">Pre-bill total</div></div>
+<div class="stc"><div class="stl">Total locs</div><div class="stv">51</div></div>
+<div class="stc"><div class="stl">Billing locs</div><div class="stv">14</div></div>
+<div class="stc"><div class="stl">TRAD</div><div class="stv" style="font-size:20px">$145</div><div class="sts mn2">11 lines</div></div>
+<div class="stc"><div class="stl">VOIP</div><div class="stv" style="font-size:20px">$72</div><div class="sts mn2">6 seats</div></div>
+</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">All locations — Hannoush Jewelers Inc</div><div style="display:flex;gap:8px"><button class="btn sm">Pre-Bill</button><button class="btn sm">CSV</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Loc ID</th><th>Name / Address</th><th>Billing</th><th>OSS Orders</th><th>TRAD</th><th>VOIP</th><th>NHCR</th><th>Total</th></tr></thead>
+<tbody>
+<tr class="cl" onclick="go('pld',null)"><td><span class="mn2" style="font-size:11px">60200</span></td><td><div style="font-weight:500">295 New State Hwy · Raynham MA</div><div style="font-size:11px;color:var(--ink3)">Primary billing location</div></td><td><span class="chip ct">✓ Corp</span></td><td class="mn2">0</td><td class="mn2">2 · $145</td><td class="mn2">6 · $72</td><td class="mn2">$123</td><td class="mn2" style="font-weight:600">$574</td></tr>
+<tr class="cl"><td><span class="mn2" style="font-size:11px">26076</span></td><td><div style="font-weight:500">1 Sangertown Sq · New Hartford NY</div></td><td><span class="chip ct">✓ Corp</span></td><td class="mn2">0</td><td class="mn2">1 · $99</td><td class="mn2">3 · $26</td><td class="mn2">$103</td><td class="mn2">$452</td></tr>
+<tr class="cl"><td><span class="mn2" style="font-size:11px">40953</span></td><td><div style="font-weight:500">9850 Colerain Ave · Cincinnati OH</div></td><td><span class="chip ct">✓ Corp</span></td><td class="mn2">2</td><td class="mn2">—</td><td class="mn2">—</td><td class="mn2">—</td><td class="mn2">—</td></tr>
+<tr class="cl"><td><span class="mn2" style="font-size:11px">42400</span></td><td><div style="font-weight:500">1769 Riverdale St · West Springfield MA</div><div style="font-size:11px;color:var(--red)">Do not auto renew</div></td><td><span class="chip ct">✓ Corp</span></td><td class="mn2">1</td><td class="mn2">—</td><td class="mn2">—</td><td class="mn2">—</td><td class="mn2">—</td></tr>
+<tr><td colspan="8" style="text-align:center;padding:12px;color:var(--ink3);font-size:13px;font-style:italic">47 additional locations — use search to filter</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- SOLUTIONS -->
+<div id="psol" class="pg">
+<div class="ph">Solutions</div>
+<div class="ps">Active service solutions across all Hannoush locations</div>
+<div class="scg">
+<div class="sc" onclick="go('pld',null)">
+<div class="sch"><div class="sci" style="background:var(--plt);color:var(--pur)">SEC</div><div style="flex:1"><div style="font-weight:600;font-size:14px">NHC Security</div><div style="font-size:11px;color:var(--ink3)">FortiGate · FortiSwitch · FortiAP · StackGuard</div></div><div><div class="scmrc">$270.55</div><div class="scmrl">/ mo</div></div></div>
+<div class="scb"><div class="scloc"><span class="slid">60200</span><span style="flex:1;color:var(--ink2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">295 New State Hwy · Raynham MA</span><span class="sd sda"><span class="dot"></span>Active</span></div></div>
+<div class="scft"><span class="chip cs">1 location</span><span class="chip ct">Order 321392</span><span style="margin-left:auto;font-size:11px">Active since Aug 2025</span></div>
+</div>
+<div class="sc" onclick="go('pld',null)">
+<div class="sch"><div class="sci" style="background:var(--tlt);color:var(--teal)">NET</div><div style="flex:1"><div style="font-weight:600;font-size:14px">Wireless DIA + StackGuard</div><div style="font-size:11px;color:var(--ink3)">Peplink 5G backup · Carrier Access Mgmt</div></div><div><div class="scmrc">$79.65</div><div class="scmrl">/ mo</div></div></div>
+<div class="scb"><div class="scloc"><span class="slid">60200</span><span style="flex:1;color:var(--ink2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">295 New State Hwy · Raynham MA</span><span class="sd sda"><span class="dot"></span>Active</span></div></div>
+<div class="scft"><span class="chip cs">1 location</span><span class="chip ct">Order 343414</span><span style="margin-left:auto;font-size:11px">Active since Aug 2025</span></div>
+</div>
+<div class="sc" onclick="go('pld',null)">
+<div class="sch"><div class="sci" style="background:var(--blt);color:var(--blu)">VOI</div><div style="flex:1"><div style="font-weight:600;font-size:14px">newVoice Hosted</div><div style="font-size:11px;color:var(--ink3)">6 hosted seats · Poly Edge + Polycom VVX</div></div><div><div class="scmrc">$93.36</div><div class="scmrl">/ mo</div></div></div>
+<div class="scb">
+<div class="scloc"><span class="slid">60200</span><span style="flex:1;color:var(--ink2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">295 New State Hwy · Raynham MA</span><span class="sd sda"><span class="dot"></span>Active</span></div>
+<div class="scloc"><span class="slid">26076</span><span style="flex:1;color:var(--ink2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">New Hartford NY</span><span class="sd sda"><span class="dot"></span>Active</span></div>
+</div>
+<div class="scft"><span class="chip cs">2 locations</span><span class="chip ct">Orders 321393, 280164</span><span style="margin-left:auto;font-size:11px">Since May 2024</span></div>
+</div>
+<div class="sc" onclick="go('pld',null)">
+<div class="sch"><div class="sci" style="background:var(--slt);color:var(--sl)">POT</div><div style="flex:1"><div style="font-weight:600;font-size:14px">POTS Legacy Lines</div><div style="font-size:11px;color:var(--ink3)">2 business lines · Verizon UNE · 12mo term</div></div><div><div class="scmrc">$114.13</div><div class="scmrl">/ mo</div></div></div>
+<div class="scb"><div class="scloc"><span class="slid">60200</span><span style="flex:1;color:var(--ink2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">295 New State Hwy · Raynham MA</span><span class="sd sdp"><span class="dot"></span>Renewing</span></div></div>
+<div class="scft"><span class="chip ca">Term renewal May 2026</span><span style="margin-left:auto;font-size:11px">Since May 2024</span></div>
+</div>
+</div>
+</div>
+
+<!-- LOCATION DETAIL -->
+<div id="pld" class="pg">
+<div style="margin-bottom:1.25rem;font-size:13px;color:var(--ink2);cursor:pointer" onclick="go('psol',null)">‹ Solutions</div>
+<div class="lh">
+<div class="lht">
+<div style="width:44px;height:44px;border-radius:var(--rs);background:var(--paper);border:1px solid var(--ln);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📍</div>
+<div class="lhi">
+<div class="lid2">LOCATION · 60200 · CORP 778122</div>
+<div class="lnm">Hannoush Jewelers Inc — Raynham MA</div>
+<div class="lad">295 New State Hwy, Raynham, MA 02767-5447</div>
+</div>
+<div id="ldheroact" style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0"></div>
+</div>
+<div class="lmt">
+<div><div class="lml">Billing cycle</div><div class="lmv">A · 04-01-2026</div></div>
+<div><div class="lml">Last billed</div><div class="lmv">$718.86</div><div style="font-size:11px;color:var(--ink3)">04-01-2026</div></div>
+<div><div class="lml">Effective date</div><div class="lmv">04-30-2024</div></div>
+<div><div class="lml">Softswitch</div><div class="lmv">MetaSwitch</div></div>
+<div><div class="lml">Mail to</div><div class="lmv">Corp + Cust</div></div>
+</div>
+</div>
+<!-- Contacts (ops) -->
+<div class="cd ops" style="margin-bottom:1.25rem">
+<div class="cdh"><div class="cdht">Contacts</div><button class="btn sm">+ Add</button></div>
+<div class="tw"><table>
+<thead><tr><th>Type</th><th>Name</th><th>Phone</th><th>Email</th><th>Bill</th><th>Order</th><th>Ticket</th><th>CAM</th></tr></thead>
+<tbody>
+<tr><td style="font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)">Main</td><td style="font-weight:500">Gary Savard</td><td class="mn2" style="font-size:12px">(413) 439-2860</td><td style="font-size:12px;color:var(--bm)">gsavard@hannoush.com</td><td><span class="chip cs" style="font-size:10px">—</span></td><td><span class="chip ct" style="font-size:10px">✓</span></td><td><span class="chip ct" style="font-size:10px">✓</span></td><td><span class="chip cs" style="font-size:10px">—</span></td></tr>
+<tr><td style="font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)">Agent</td><td style="font-weight:500">Katie Trombetta</td><td></td><td style="font-size:12px;color:var(--bm)">ktrombetta@amplix.com</td><td><span class="chip cs" style="font-size:10px">—</span></td><td><span class="chip ct" style="font-size:10px">✓</span></td><td><span class="chip cs" style="font-size:10px">—</span></td><td><span class="chip cs" style="font-size:10px">—</span></td></tr>
+</tbody>
+</table></div>
+</div>
+<!-- Tabs -->
+<div class="tabs">
+<div class="tab on" onclick="stab('ts1',this)">Services &amp; billing</div>
+<div class="tab" onclick="stab('ts2',this)">Circuits / TNs</div>
+<div class="tab" onclick="stab('ts3',this)">Equipment</div>
+<div class="tab" onclick="stab('ts4',this)">Orders</div>
+<div class="tab" onclick="stab('ts5',this)">Tickets</div>
+<div class="tab ops" onclick="stab('ts6',this)">Notes</div>
+</div>
+
+<!-- TAB 1: Services & billing -->
+<div id="ts1" class="tp on">
+<div class="sg" style="grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:1.25rem">
+<div class="stc"><div class="stl">Monthly</div><div class="stv" style="font-size:22px">$574</div></div>
+<div class="stc"><div class="stl">Circuits</div><div class="stv" style="font-size:22px">7</div></div>
+<div class="stc"><div class="stl">Devices</div><div class="stv" style="font-size:22px">9</div><div class="sts">Rental</div></div>
+<div class="stc"><div class="stl">Open orders</div><div class="stv" style="font-size:22px">0</div></div>
+<div class="stc"><div class="stl">Oldest item</div><div class="stv" style="font-size:22px">23<span style="font-size:14px;font-weight:500"> mo</span></div></div>
+</div>
+<!-- SEC block -->
+<div class="bb">
+<div class="bbh" onclick="tblk('bs1','be1')">
+<div class="bbi" style="background:var(--plt);color:var(--pur)">SEC</div>
+<div class="bbin"><div class="bbey">ANI · Circuit <span class="chip cp" style="font-size:10px">Security</span></div><div class="bbid">60200SECURITY</div><div class="bbd">Fortinet managed firewall, switch &amp; WiFi · Order 321392</div></div>
+<div><div class="bbm">$270.55</div><div class="bbml">/ month</div></div>
+<span class="bc op" id="be1">›</span>
+</div>
+<div id="bs1">
+<div class="ag">
+<div class="agh"><div class="ap" style="background:var(--pm)"></div><span class="al2">Circuit</span><span class="ai3">60200SECURITY</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip cp" style="font-size:10px">Fortinet suite</span></div><span class="as2">$270.55 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiGate managed small firewall</div><div class="lrs">MGDFNSM · Fortinet</div></div><div class="lrc">MGDFNSM</div><div class="lra">$99.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiSwitch 24F rental<span class="tp3">36mo</span></div><div class="lrs">FN24PTPOER · 0401A1C88014</div></div><div class="lrc">FN24PTPOER</div><div class="lra">$44.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiSwitch managed medium</div><div class="lrs">MGDFNSWMD</div></div><div class="lrc">MGDFNSWMD</div><div class="lra">$33.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiGate 40F UTP 3YR license<span class="tp3">36mo</span></div><div class="lrs">FN40FTP36 · NHC00088603A · exp 04-30-2028</div></div><div class="lrc">FN40FTP36</div><div class="lra">$23.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiAP managed WiFi 3<span class="tp3">36mo</span></div><div class="lrs">MGDFNAP3</div></div><div class="lrc">MGDFNAP3</div><div class="lra">$19.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiGate 40F rental<span class="tp3">36mo</span></div><div class="lrs">FN40FR · 0401A1227E80</div></div><div class="lrc">FN40FR</div><div class="lra">$13.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiSwitch 124F support 3YR<span class="tp3">36mo</span></div><div class="lrs">FN24FF36 · NHC00088627A</div></div><div class="lrc">FN24FF36</div><div class="lra">$11.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiAP 221E rental<span class="tp3">36mo</span></div><div class="lrs">FN221ER · 38C0EAFA1F28</div></div><div class="lrc">FN221ER</div><div class="lra">$10.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiGate cloud manager<span class="tp3">36mo</span></div><div class="lrs">FN40F36 · NHC00088613A</div></div><div class="lrc">FN40F36</div><div class="lra">$8.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">FortiAP 221E support 3YR<span class="tp3">36mo</span></div><div class="lrs">FN221E36 · NHC00088588A</div></div><div class="lrc">FN221E36</div><div class="lra">$2.95</div></div>
+</div>
+<div class="ops" style="display:flex;gap:8px;padding:8px 1.25rem;background:var(--plt);border-top:1px solid rgba(124,58,237,0.12)">
+<button class="btn sm" style="border-color:var(--pur);color:var(--pur)">+ Add item</button><button class="btn sm">Override charge</button><button class="btn sm">Edit BTN</button>
+</div>
+</div>
+</div>
+<!-- NET block -->
+<div class="bb">
+<div class="bbh" onclick="tblk('bs2','be2')">
+<div class="bbi" style="background:var(--tlt);color:var(--teal)">NET</div>
+<div class="bbin"><div class="bbey">BTN <span class="chip ct" style="font-size:10px">Networking</span></div><div class="bbid">60200MGDSTACK</div><div class="bbd">Wireless backup · managed BW · StackGuard · Orders 343414, 317346</div></div>
+<div><div class="bbm">$187.10</div><div class="bbml">/ month</div></div>
+<span class="bc op" id="be2">›</span>
+</div>
+<div id="bs2">
+<div class="ag">
+<div class="agh"><div class="ap" style="background:var(--tm)"></div><span class="al2">TRK · Circuit</span><span class="ai3">5082697031</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip ct" style="font-size:10px">Wireless backup</span></div><span class="as2">$49.80 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">4G LTE backup</div><div class="lrs">4G1GWB037 · Verizon Wireless</div></div><div class="lrc">4G1GWB037</div><div class="lra">$21.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">5G backup device rental<span class="tp3">36mo</span></div><div class="lrs">PMBRI5GR · Peplink · D413F86E71C0</div></div><div class="lrc">PMBRI5GR</div><div class="lra">$14.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">StackGuard proactive monitoring</div><div class="lrs">STACKSG-1 · New Horizons</div></div><div class="lrc">STACKSG-1</div><div class="lra">$9.95</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Peplink MAX BR1 support<span class="tp3">36mo</span></div><div class="lrs">PMBR112 · NHC00093640A · exp 08-25-2026</div></div><div class="lrc">PMBR112</div><div class="lra">$2.95</div></div>
+<div class="lr z" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Wireless overage / Static IP</div><div class="lrc">U-220-VP</div><div class="lrz">$0.00</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:var(--tm)"></div><span class="al2">TRK · Circuit</span><span class="ai3">60200CAMMINT001</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip ct" style="font-size:10px">Managed BW</span></div><span class="as2">$29.95 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Managed customer-supplied bandwidth</div><div class="lrs">IPCTCAM · Carrier Access Mgmt</div></div><div class="lrc">IPCTCAM</div><div class="lra">$29.95</div></div>
+<div class="lr z" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Customer-supplied IP</div><div class="lrs ops"><span class="fp2">⚠ item 4719952 duplicate — zeroed, remove before next cycle</span></div></div><div class="lrc">IPADDCAM</div><div class="lrz">$0.00</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:#aaa"></div><span class="al2">BTN-level</span><span class="ai3">60200MGDSTACK</span><span class="as2">$38.64 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Interstate recovery</div><div class="lrc">ICCRC</div><div class="lra">$28.98</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Maint &amp; repair program</div><div class="lrc">MRP</div><div class="lra">$9.66</div></div>
+</div>
+</div>
+</div>
+<!-- VOICE block -->
+<div class="bb">
+<div class="bbh" onclick="tblk('bs3','be3')">
+<div class="bbi" style="background:var(--blt);color:var(--blu)">VOI</div>
+<div class="bbin"><div class="bbey">BTN <span class="chip cb" style="font-size:10px">Voice</span></div><div class="bbid">60200NEWVOICE</div><div class="bbd">newVoice hosted seats · 6 DIDs · Poly Edge + Polycom VVX · Orders 321393, 280164</div></div>
+<div><div class="bbm">$93.36</div><div class="bbml">/ month</div></div>
+<span class="bc op" id="be3">›</span>
+</div>
+<div id="bs3">
+<div class="ag">
+<div class="agh"><div class="ap" style="background:var(--bm)"></div><span class="al2">ANI · DID</span><span class="ai3">508-824-3410</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip cb" style="font-size:10px">Enhanced · seats ×3</span></div><span class="as2">$56.47 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">newVoice enhanced DID w/ E911</div><div class="lrs">NVE911</div></div><div class="lrc">NVE911</div><div class="lra">$3.50</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Unlimited seat ×3<span class="tp3">36mo</span></div><div class="lrs">NVHSU · .2401 · .2402 · .2403</div></div><div class="lrc">NVHSU</div><div class="lra">$32.97</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Polycom VVX 400 rental ×3<span class="tp3">36mo</span></div><div class="lrs">RPVX400R · 64167F902DAF · DCD · F4E</div></div><div class="lrc">RPVX400R</div><div class="lra">$14.97</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Voice mail ×3</div><div class="lrc">NVVM</div><div class="lra">$3.00</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:var(--bm)"></div><span class="al2">ANI · DID range</span><span class="ai3">774-632-5366–5368</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip cb" style="font-size:10px">Standard · Feb 2026</span></div><span class="as2">$36.89 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Standard seat ×3<span class="tp3">36mo</span></div><div class="lrs">NVHSTD · Show Room 24 · Store Mgr 24 · Back Room 24</div></div><div class="lrc">NVHSTD</div><div class="lra">$32.85</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Poly Edge E300 rental ×3<span class="tp3">36mo</span></div><div class="lrs">PEDGEE300R · 482567612728 · 1366A · 613693</div></div><div class="lrc">PEDGEE300R</div><div class="lra">$17.85</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">E911 public safety surcharge ×3</div><div class="lrs">E911PSS</div></div><div class="lrc">E911PSS</div><div class="lra">$2.85</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">Poly Edge PSU rental ×3<span class="tp3">36mo</span></div><div class="lrs">PEGEPS3/4R · NHC8535S · NHC8550S · NHC8556S</div></div><div class="lrc">PEGEPS3/4R</div><div class="lra">$2.85</div></div>
+<div class="lr z" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">DID pkg / VM pkg / Zero-rated VOIP ×3</div><div class="lrc">various</div><div class="lrz">$0.00</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:#aaa"></div><span class="al2">BTN-level</span><span class="ai3">60200NEWVOICE</span><span class="as2">$11.88 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Interstate recovery</div><div class="lrc">ICCRC</div><div class="lra">$8.91</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Maint &amp; repair program</div><div class="lrc">MRP</div><div class="lra">$2.97</div></div>
+</div>
+</div>
+</div>
+<!-- POTS block -->
+<div class="bb">
+<div class="bbh" onclick="tblk('bs4','be4')">
+<div class="bbi" style="background:var(--slt);color:var(--sl)">POT</div>
+<div class="bbin"><div class="bbey">BTN <span class="chip cs" style="font-size:10px">POTS</span> <span class="chip ca" style="font-size:10px">Term renews May 2026</span></div><div class="bbid">508-828-2560</div><div class="bbd">2 legacy business lines · Verizon UNE · 12mo term</div></div>
+<div><div class="bbm">$114.13</div><div class="bbml">/ month</div></div>
+<span class="bc op" id="be4">›</span>
+</div>
+<div id="bs4">
+<div class="ag">
+<div class="agh"><div class="ap" style="background:#888"></div><span class="al2">ANI</span><span class="ai3">508-824-2045</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip cs" style="font-size:10px">Verizon UNE · 12mo</span></div><span class="as2">$57.70 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">12+M business line w/ LD<span class="tp3">12mo</span></div><div class="lrs">12+1MBSLD</div></div><div class="lrc">12+1MBSLD</div><div class="lra">$43.97</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">FCC line charge</div><div class="lrc">EUCL</div><div class="lra">$8.99</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">PICC</div><div class="lrc">PICC</div><div class="lra">$3.75</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">LNP</div><div class="lrc">LNPPOTS</div><div class="lra">$0.99</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:#888"></div><span class="al2">ANI</span><span class="ai3">508-828-2560</span><div style="display:flex;gap:5px;margin-left:6px"><span class="chip cs" style="font-size:10px">Verizon UNE · 12mo</span></div><span class="as2">$57.70 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div><div class="lrn">12+M business line w/ LD<span class="tp3">12mo</span></div><div class="lrs">12+1MBSLD</div></div><div class="lrc">12+1MBSLD</div><div class="lra">$43.97</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">FCC line charge</div><div class="lrc">EUCL</div><div class="lra">$8.99</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">PICC</div><div class="lrc">PICC</div><div class="lra">$3.75</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">LNP</div><div class="lrc">LNPPOTS</div><div class="lra">$0.99</div></div>
+</div>
+<div class="ag">
+<div class="agh"><div class="ap" style="background:#aaa"></div><span class="al2">BTN-level</span><span class="ai3">508-828-2560</span><span class="as2">$12.69 / mo</span></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Interstate recovery</div><div class="lrc">ICCRC</div><div class="lra">$9.52</div></div>
+<div class="lr" style="grid-template-columns:minmax(0,1fr) 100px 70px"><div class="lrn">Maint &amp; repair program</div><div class="lrc">MRP</div><div class="lra">$3.17</div></div>
+</div>
+</div>
+</div>
+</div><!-- /ts1 -->
+
+<!-- TAB 2: Circuits / TNs -->
+<div id="ts2" class="tp">
+<div class="cd">
+<div class="cdh"><div class="cdht">Phone numbers</div><div style="display:flex;gap:8px"><button class="btn sm">TN Status Mgr</button><button class="btn sm">CSV</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Number</th><th>Ext</th><th>Name</th><th>Switch</th><th>Line type</th><th>MAC</th><th>Status</th><th>CC</th><th>E911</th></tr></thead>
+<tbody>
+<tr><td class="mn2">(774) 632-5366</td><td class="mn2" style="font-size:11px">2411</td><td>Show Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td class="mn2" style="font-size:10px">482567612728</td><td><span class="sd sda"><span class="dot"></span>Assigned</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(774) 632-5367</td><td></td><td>Store Manager 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td class="mn2" style="font-size:10px">48256761366A</td><td><span class="sd sda"><span class="dot"></span>Assigned</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(774) 632-5368</td><td></td><td>Back Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td class="mn2" style="font-size:10px">482567613693</td><td><span class="sd sda"><span class="dot"></span>Assigned</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(595) 200-0591</td><td class="mn2" style="font-size:11px">2401</td><td>Store Manager 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td class="mn2" style="font-size:10px">64167F902DAF</td><td><span class="sd sda"><span class="dot"></span>Assigned</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(595) 200-0592</td><td class="mn2" style="font-size:11px">2402</td><td>Back Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td class="mn2" style="font-size:10px">64167F902DCD</td><td><span class="sd sda"><span class="dot"></span>Assigned</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(508) 824-2045</td><td></td><td></td><td></td><td><span class="chip cs" style="font-size:10px">ANI</span></td><td></td><td><span class="sd sdp"><span class="dot"></span>Unassigned</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(508) 828-2560</td><td></td><td></td><td></td><td><span class="chip cs" style="font-size:10px">ANI</span></td><td></td><td><span class="sd sdp"><span class="dot"></span>Unassigned</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- TAB 3: Equipment -->
+<div id="ts3" class="tp">
+<div class="cd">
+<div class="cdh"><div class="cdht">Inventory — 60200</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ct">6 Phones</span><span class="chip cs">2 Routers</span><span class="chip cs">2 Switches</span><span class="chip cs">5 Acc</span><button class="btn sm ops">Inventory Functions</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>Item codes</th><th>MAC / Serial</th><th>Finance status</th><th>Wty exp</th><th class="ops">CPE state</th><th class="ops">Cost</th></tr></thead>
+<tbody>
+<tr><td><div style="font-weight:500">FORTINET FortiGate-40F Firewall</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN40FR</span><span class="chip cs" style="font-size:10px;margin:1px">FN40FX</span></td><td class="mn2" style="font-size:11px">0401A1227E80</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$297</td></tr>
+<tr><td><div style="font-weight:500">FORTINET FortiSwitch 24FF</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN24PTPOER</span></td><td class="mn2" style="font-size:11px">0401A1C88014</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$957</td></tr>
+<tr><td><div style="font-weight:500">FortiAP 221E Access Point</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN221ER</span></td><td class="mn2" style="font-size:11px">38C0EAFA1F28</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$132</td></tr>
+<tr><td><div style="font-weight:500">Peplink MAX BR1-Mini-5G Mobile</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PMBRI5GR</span></td><td class="mn2" style="font-size:11px">D413F86E71C0</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$399</td></tr>
+<tr><td><div style="font-weight:500">Poly Edge E300 ×3</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PEDGEE300R</span></td><td class="mn2" style="font-size:11px">·612728 · ·1366A · ·613693</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$116ea</td></tr>
+<tr><td><div style="font-weight:500">Polycom VVX 400 ×3</div><div style="font-size:11px;color:var(--amr)">CPE state: Obsolete</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">RPVX400R</span></td><td class="mn2" style="font-size:11px">·902DAF · ·902DCD · ·902F4E</td><td><span class="chip cs">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px;color:var(--amr)">Obsolete</td><td class="mn2 ops">$148ea</td></tr>
+<tr><td><div style="font-weight:500">Poly Edge E300|400 PSU ×3</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PEGEPS3/4R</span></td><td class="mn2" style="font-size:11px">NHC8535S · NHC8550S · NHC8556S</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$38ea</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- TAB 4: Orders -->
+<div id="ts4" class="tp">
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">Open orders</div><div style="display:flex;gap:8px" class="ops"><button class="btn sm bp">+ New order</button><button class="btn sm bam">Disconnect</button><button class="btn sm">Recontract</button></div></div>
+<div style="padding:1.25rem;color:var(--ink3);font-style:italic;font-size:13px">No open orders at this location.</div>
+</div>
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">Closed orders</div></div>
+<div class="tw"><table>
+<thead><tr><th>CC order</th><th>OSS #</th><th>Opened</th><th>Closed</th><th>Type</th><th>Days</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td class="mn2">321393</td><td class="mn2" style="font-size:11px">114079</td><td class="mn2" style="font-size:11px">03-07-2025</td><td class="mn2" style="font-size:11px">02-13-2026</td><td style="font-weight:500">newVoice Hosted</td><td class="mn2">343</td><td><span class="chip ct">Complete</span></td></tr>
+<tr><td class="mn2">321392</td><td class="mn2" style="font-size:11px">114078</td><td class="mn2" style="font-size:11px">03-07-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td style="font-weight:500">NHC Security</td><td class="mn2">173</td><td><span class="chip ct">Complete</span></td></tr>
+<tr><td class="mn2">343414</td><td class="mn2" style="font-size:11px">126607</td><td class="mn2" style="font-size:11px">08-25-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td style="font-weight:500">Wireless DIA</td><td class="mn2">0</td><td><span class="chip ct">Complete</span></td></tr>
+<tr><td class="mn2">317346</td><td class="mn2" style="font-size:11px">112052</td><td class="mn2" style="font-size:11px">02-04-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td style="font-weight:500">Customer Provided Internet</td><td class="mn2">204</td><td><span class="chip ct">Complete</span></td></tr>
+<tr><td class="mn2">344702</td><td class="mn2" style="font-size:11px">127303</td><td class="mn2" style="font-size:11px">09-04-2025</td><td class="mn2" style="font-size:11px">09-16-2025</td><td style="font-weight:500">Cloud/DR Disconnect</td><td class="mn2">15</td><td><span class="chip ct">Complete</span></td></tr>
+<tr><td class="mn2">353272</td><td class="mn2" style="font-size:11px">132459</td><td class="mn2" style="font-size:11px">11-11-2025</td><td class="mn2" style="font-size:11px">11-11-2025</td><td style="font-weight:500">StackGuard Standalone</td><td class="mn2">0</td><td><span class="chip ct">Complete</span></td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Cancelled orders</div></div>
+<div class="tw"><table>
+<thead><tr><th>CC order</th><th>OSS #</th><th>Opened</th><th>Type</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td class="mn2">343433</td><td class="mn2" style="font-size:11px">126616</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>newVoice Hosted — MAC</td><td><span class="chip cr2">Cancelled</span></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- TAB 5: Tickets -->
+<div id="ts5" class="tp">
+<div class="sg sg2">
+<div class="cd">
+<div class="cdh" style="background:var(--ink)"><div style="color:#fff;font-weight:600;font-size:13px">Customer Service</div><span class="chip" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)">0 open</span></div>
+<div class="tw"><table><thead><tr><th>Queue</th><th>Open</th><th>MTTR</th></tr></thead><tbody>
+<tr class="z"><td>Billing / Collections</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>CSR / Billing</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Customer Experience</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Rate Change</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Unassigned</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+</tbody></table></div>
+</div>
+<div class="cd">
+<div class="cdh" style="background:var(--ink)"><div style="color:#fff;font-weight:600;font-size:13px">Service Assurance</div><span class="chip" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)">0 open</span></div>
+<div class="tw"><table><thead><tr><th>Queue</th><th>Open</th><th>MTTR</th></tr></thead><tbody>
+<tr class="z"><td>Data</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Network</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Voice</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>VOIP / SIP</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+<tr class="z"><td>Unassigned</td><td class="mn2">0</td><td class="mn2">0</td></tr>
+</tbody></table></div>
+</div>
+</div>
+</div>
+
+<!-- TAB 6: Notes (ops) -->
+<div id="ts6" class="tp ops">
+<div class="cd">
+<div class="cdh"><div class="cdht">Notes — 60200 Raynham</div><button class="btn sm bp">+ Add note</button></div>
+<div style="padding:0 1.25rem">
+<div class="ntm"><div class="nav" style="background:var(--alt);color:var(--amr)">RG</div><div><div class="nmeta"><span class="nau">Robert Goodwin</span><span class="nrl" style="background:var(--tlt);color:var(--teal)">Ops</span><span class="chip cb" style="font-size:10px">Order</span><span class="ntx">02-13-2026</span></div><div class="ntxt">CC Order #321393 sent to CustomCall via Bill-O-Matic. Order complete confirmed.</div></div></div>
+<div class="ntm"><div class="nav" style="background:var(--blt);color:var(--blu)">PF</div><div><div class="nmeta"><span class="nau">Paul Ferreira</span><span class="nrl" style="background:var(--blt);color:var(--blu)">OSS</span><span class="chip ct" style="font-size:10px">General</span><span class="ntx">02-13-2026</span></div><div class="ntxt">Upgrade complete. All 3 new Poly Edge E300 seats active on 774-632-5366–5368. E911 confirmed.</div></div></div>
+<div class="ntm" style="border-bottom:none"><div class="nav" style="background:var(--tlt);color:var(--teal)">PM</div><div><div class="nmeta"><span class="nau">Paul Miller</span><span class="nrl" style="background:var(--tlt);color:var(--teal)">Ops</span><span class="chip ca" style="font-size:10px">Equipment</span><span class="ntx">08-28-2025</span></div><div class="ntxt">NHC Security + Wireless DIA activated. FortiGate 40F (0401A1227E80), Peplink BR1 (D413F86E71C0) online. StackGuard confirmed.</div></div></div>
+</div>
+</div>
+</div>
+
+</div><!-- /pld -->
+
+<!-- NETWORK -->
+<div id="pnet" class="pg">
+<div class="ph">Network</div><div class="ps">60200 — 295 New State Hwy, Raynham MA</div>
+<div class="np"><div class="nph"><div class="npt"><span class="chip ct">NHC</span>Comcast <span class="mn2" style="font-size:10px;color:var(--ink3)">TRK: 36860CMCTINT001</span></div><span class="sd sdo"><span class="dot"></span>Disconnected</span></div><div class="npb"><div class="npf"><div class="npfl">Provider</div><div class="npfv">NHC</div></div><div class="npf"><div class="npfl">Carrier</div><div class="npfv">Comcast</div></div><div class="npf"><div class="npfl">Carrier circuit</div><div class="npfv">971571259</div></div><div class="npf"><div class="npfl">LEC circuit</div><div class="npfv">12617639</div></div><div class="npf"><div class="npfl">Network</div><div class="npfv">50.212.96.32/29</div></div><div class="npf"><div class="npfl">Gateway</div><div class="npfv">50.212.96.38</div></div><div class="npf"><div class="npfl">IP type</div><div class="npfv">Static</div></div><div class="npf"><div class="npfl">Bandwidth</div><div class="npfv">25-5</div></div></div></div>
+<div class="np"><div class="nph"><div class="npt"><span class="chip cs">Customer</span>Connection</div><span class="sd sda"><span class="dot"></span>Online</span></div><div class="npb"><div class="npf"><div class="npfl">Provider</div><div class="npfv">Customer</div></div><div class="npf"><div class="npfl">IP type</div><div class="npfv">Static</div></div><div class="npf"><div class="npfl">First IP</div><div class="npfv">50.187.184.8</div></div><div class="npf"><div class="npfl">Gateway</div><div class="npfv">50.187.184.14</div></div><div class="npf"><div class="npfl">Subnet</div><div class="npfv">255.255.255.248</div></div><div class="npf"><div class="npfl">Notes</div><div style="font-size:12px;color:var(--ink);padding-top:2px">Customer supplied 50.187.184.9 thru .13</div></div></div></div>
+<div class="np"><div class="nph"><div class="npt"><span class="chip ct">NHC</span>Wireless DIA <span class="mn2" style="font-size:10px;color:var(--ink3)">MTN: 5082697031</span></div><span class="sd sda"><span class="dot"></span>Online · 166.157.75.38</span></div><div class="npb"><div class="npf"><div class="npfl">MAC</div><div class="npfv">D413F86E71C0</div></div><div class="npf"><div class="npfl">IP address</div><div class="npfv">166.157.75.38</div></div><div class="npf"><div class="npfl">Gateway</div><div class="npfv">166.157.75.39</div></div><div class="npf"><div class="npfl">Subnet</div><div class="npfv">255.255.255.254</div></div><div class="npf"><div class="npfl">Usage plan</div><div style="font-size:12px;color:var(--ink);padding-top:2px">U-220-VP · $15/GB overage</div></div><div class="npf"><div class="npfl" style="color:var(--amr)">Cloud Manager</div><div style="font-size:12px;color:var(--amr);padding-top:2px">Not found — license may have expired</div></div></div></div>
+</div>
+
+<!-- DLR -->
+<div id="pdlr" class="pg">
+<div class="ph">Design Layout Record</div><div class="ps">60200 — Service topology at Raynham MA</div>
+<div style="display:flex;gap:8px;margin-bottom:1.25rem">
+<button class="btn sm ops">Add circuit</button><button class="btn sm ops">Add device</button><button class="btn sm ops">Pause TN refresh</button>
+</div>
+<div style="margin-bottom:14px">
+<div style="background:var(--tlt);color:var(--teal);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;border-radius:var(--rs) var(--rs) 0 0;border:1px solid rgba(10,110,82,0.2)">S1 — Stacked gateway devices</div>
+<div style="border:1px solid rgba(10,110,82,0.2);border-top:none;border-radius:0 0 var(--rs) var(--rs)">
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ln);font-size:13px;background:var(--sur)"><span class="mn2">5082697031 | 166.157.75.38</span><span style="margin-left:auto"><span class="sd sda" style="font-size:11px"><span class="dot"></span>Online</span></span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;background:var(--sur)"><span class="mn2">60200CAMMINT001 | 50.187.184.13</span><span style="margin-left:auto"><span class="sd sda" style="font-size:11px"><span class="dot"></span>Online</span></span></div>
+</div>
+</div>
+<div style="margin-bottom:14px">
+<div style="background:var(--blt);color:var(--blu);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;border-radius:var(--rs) var(--rs) 0 0;border:1px solid rgba(26,63,138,0.2)">CC — Custom Call internet circuits</div>
+<div style="border:1px solid rgba(26,63,138,0.2);border-top:none;border-radius:0 0 var(--rs) var(--rs)">
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--ln);font-size:13px;background:var(--sur)"><span class="mn2">New Horizons – 5082697031</span><span class="mn2" style="margin-left:auto;margin-right:12px;font-size:11px;color:var(--ink3)">166.157.75.39</span><span class="sd sda" style="font-size:11px"><span class="dot"></span>Online</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;background:var(--sur)"><span class="mn2">New Horizons – 60200CAMMINT001</span><span style="margin-left:auto"><span class="sd sdo" style="font-size:11px"><span class="dot"></span>Offline</span></span></div>
+</div>
+</div>
+<div style="margin-bottom:14px">
+<div style="background:var(--slt);color:var(--sl);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;border-radius:var(--rs) var(--rs) 0 0;border:1px solid rgba(58,58,66,0.15)">CIR — Circuit internet records</div>
+<div style="border:1px solid rgba(58,58,66,0.15);border-top:none;border-radius:0 0 var(--rs) var(--rs)">
+<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--ln);font-size:13px;background:var(--sur)"><span class="chip ct" style="font-size:10px">NHC</span><span class="mn2">TRK: 36860CMCTINT001 — Comcast</span><span class="mn2" style="margin-left:auto;margin-right:12px;font-size:11px;color:var(--ink3)">50.212.96.38</span><span class="sd sdo" style="font-size:11px"><span class="dot"></span>Offline</span></div>
+<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--ln);font-size:13px;background:var(--sur)"><span class="chip cs" style="font-size:10px">Cust</span><span class="mn2">Comcast — customer supplied</span><span class="mn2" style="margin-left:auto;margin-right:12px;font-size:11px;color:var(--ink3)">50.187.184.14</span><span class="sd sda" style="font-size:11px"><span class="dot"></span>Online</span></div>
+<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:13px;background:var(--sur)"><span class="chip ct" style="font-size:10px">NHC</span><span class="mn2">Wireless DIA · Peplink 5G · D413F86E71C0 · 5082697031</span><span class="mn2" style="margin-left:auto;margin-right:12px;font-size:11px;color:var(--ink3)">166.157.75.38</span><span class="sd sda" style="font-size:11px"><span class="dot"></span>Online</span></div>
+</div>
+</div>
+</div>
+
+<!-- BILLING -->
+<div id="pbil" class="pg">
+<div class="ph">Billing detail</div><div class="ps">60200 — April 2026 · Billing cycle A</div>
+<div class="sg" style="grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:1.25rem">
+<div class="stc dk"><div class="stl">Service MRC</div><div class="stv">$574</div><div class="sts">6 phones · 14 billing locs</div></div>
+<div class="stc"><div class="stl">TRAD</div><div class="stv" style="font-size:22px">$145</div><div class="sts">2 lines</div></div>
+<div class="stc"><div class="stl">VOIP</div><div class="stv" style="font-size:22px">$72</div><div class="sts">6 seats</div></div>
+<div class="stc"><div class="stl">NHCR</div><div class="stv" style="font-size:22px">$123</div></div>
+<div class="stc"><div class="stl">Open disputes</div><div class="stv" style="font-size:22px">0</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap">
+<button class="btn sm">Summary</button><button class="btn sm">Preview</button><button class="btn sm">View term/all</button><button class="btn sm ops">View CPE</button><button class="btn sm">CSV</button><button class="btn sm ops">INV</button><button class="btn sm ops">Bill-O-Matic</button><button class="btn sm ops btl">Credit</button>
+</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Raw billing — April 2026</div><div style="display:flex;gap:8px"><button class="btn sm">Select BTN</button><button class="btn sm ops">Final bill</button></div></div>
+<div class="tw"><table>
+<thead><tr><th></th><th>BTN</th><th>ANI / TRK</th><th>Item ID</th><th>Description</th><th>Code</th><th>Amount</th><th>Tot. billed</th><th>Months</th></tr></thead>
+<tbody>
+<tr><td><span class="chip ct" style="font-size:9px;padding:1px 4px">●</span></td><td class="mn2" style="font-size:11px">5088282560</td><td></td><td class="mn2" style="font-size:11px">4218222</td><td>Interstate Recovery</td><td class="mn2" style="font-size:11px">ICCRC</td><td class="mn2">$9.52</td><td class="mn2" style="font-size:11px">$201.86</td><td class="mn2" style="font-size:11px">23</td></tr>
+<tr><td></td><td class="mn2" style="font-size:11px">5088282560</td><td class="mn2" style="font-size:11px">5088242045</td><td class="mn2" style="font-size:11px">4218232</td><td>12+M Business Line w/ LD</td><td class="mn2" style="font-size:11px">12+1MBSLD</td><td class="mn2">$43.97</td><td class="mn2" style="font-size:11px">$898.98</td><td class="mn2" style="font-size:11px">23</td></tr>
+<tr><td></td><td class="mn2" style="font-size:11px">60200MGDSTACK</td><td class="mn2" style="font-size:11px">5082697031</td><td class="mn2" style="font-size:11px">4651589</td><td>4G LTE Back-up</td><td class="mn2" style="font-size:11px">4G1GWB037</td><td class="mn2">$21.95</td><td class="mn2" style="font-size:11px">$178.43</td><td class="mn2" style="font-size:11px">8</td></tr>
+<tr><td></td><td class="mn2" style="font-size:11px">60200MGDSTACK</td><td class="mn2" style="font-size:11px">60200SECURITY</td><td class="mn2" style="font-size:11px">4651602</td><td>FortiGate Managed Small Firewall</td><td class="mn2" style="font-size:11px">MGDFNSM</td><td class="mn2">$99.95</td><td class="mn2" style="font-size:11px">$812.50</td><td class="mn2" style="font-size:11px">8</td></tr>
+<tr class="z"><td><span class="chip ca" style="font-size:9px;padding:1px 4px">!</span></td><td class="mn2" style="font-size:11px">60200MGDSTACK</td><td class="mn2" style="font-size:11px">60200CAMMINT001</td><td class="mn2" style="font-size:11px">4719952</td><td>StackGuard Monitoring <span style="font-size:10px;color:var(--amr)">(dup — zeroed)</span></td><td class="mn2" style="font-size:11px">STACKSG-1</td><td class="mn2" style="color:var(--ink3)">$0.00</td><td class="mn2" style="font-size:11px;color:var(--ink3)">$0.00</td><td class="mn2" style="font-size:11px">5</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- ORDERS (global) -->
+<div id="pord" class="pg">
+<div class="ph">Orders</div><div class="ps">778122 Hannoush Jewelers Inc — all locations</div>
+<div class="cd" style="margin-bottom:14px"><div class="cdh"><div class="cdht">Open orders</div><div class="ops" style="display:flex;gap:8px"><button class="btn sm bp">+ New</button><button class="btn sm bam">Disconnect</button></div></div><div style="padding:1.25rem;color:var(--ink3);font-style:italic;font-size:13px">No open orders across all locations.</div></div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Order history — all locations</div></div>
+<div class="tw"><table>
+<thead><tr><th>CC order</th><th>OSS #</th><th>Location</th><th>Type</th><th>Opened</th><th>Closed</th><th>Days</th><th>Status</th></tr></thead>
+<tbody>
+<tr class="cl"><td class="mn2">321393</td><td class="mn2" style="font-size:11px">114079</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">newVoice Hosted</td><td class="mn2" style="font-size:11px">03-07-2025</td><td class="mn2" style="font-size:11px">02-13-2026</td><td class="mn2">343</td><td><span class="chip ct">Complete</span></td></tr>
+<tr class="cl"><td class="mn2">321392</td><td class="mn2" style="font-size:11px">114078</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">NHC Security</td><td class="mn2" style="font-size:11px">03-07-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td class="mn2">173</td><td><span class="chip ct">Complete</span></td></tr>
+<tr class="cl"><td class="mn2">343414</td><td class="mn2" style="font-size:11px">126607</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">Wireless DIA</td><td class="mn2" style="font-size:11px">08-25-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td class="mn2">0</td><td><span class="chip ct">Complete</span></td></tr>
+<tr class="cl"><td class="mn2">317346</td><td class="mn2" style="font-size:11px">112052</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">Customer Provided Internet</td><td class="mn2" style="font-size:11px">02-04-2025</td><td class="mn2" style="font-size:11px">08-28-2025</td><td class="mn2">204</td><td><span class="chip ct">Complete</span></td></tr>
+<tr class="cl"><td class="mn2">344702</td><td class="mn2" style="font-size:11px">127303</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">Cloud/DR — Disconnect</td><td class="mn2" style="font-size:11px">09-04-2025</td><td class="mn2" style="font-size:11px">09-16-2025</td><td class="mn2">15</td><td><span class="chip ct">Complete</span></td></tr>
+<tr class="cl"><td class="mn2">343433</td><td class="mn2" style="font-size:11px">126616</td><td style="font-size:12px">60200 Raynham MA</td><td style="font-weight:500">newVoice Hosted — MAC</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>—</td><td class="mn2">1</td><td><span class="chip cr2">Cancelled</span></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- TICKETS (global) -->
+<div id="ptix" class="pg">
+<div class="ph">Trouble Tickets</div><div class="ps">778122 — all locations</div>
+<div class="sg sg2" style="margin-bottom:1.25rem">
+<div class="stc"><div class="stl">Customer service open</div><div class="stv">0</div></div>
+<div class="stc"><div class="stl">Service assurance open</div><div class="stv">0</div></div>
+</div>
+<div style="color:var(--ink3);font-style:italic;font-size:13px;text-align:center;padding:2rem 0">No open tickets across all locations.</div>
+</div>
+
+<!-- DOCUMENTS -->
+<div id="pdoc" class="pg">
+<div class="ph">Documents</div><div class="ps">778122 · 60200 — all uploaded files</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">All documents</div><button class="btn sm bp ops">+ Add</button></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">317346 — BD 2025-02-04 — Addendum</div><div class="dm">ECortez · 02-04-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">321392 — BD 2025-03-07 — Addendum</div><div class="dm">KLopez · 03-07-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">321393 — BD 2025-03-07 — Addendum</div><div class="dm">KLopez · 03-07-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">60200 — 321392 — MDS</div><div class="dm">PMiller · 08-20-2025</div></div>
+<div class="dr"><div class="di">XLS</div><div class="dn">60200 — 321392 — Configure ACD Approved</div><div class="dm">PMiller · 08-20-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">60200 — RFQ</div><div class="dm">KLopez · 08-25-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">60200 — Addendum</div><div class="dm">KLopez · 08-25-2025</div></div>
+<div class="dr"><div class="di">DOC</div><div class="dn">60200 — 317346 — Required Document Upload</div><div class="dm">PMiller · 08-28-2025</div></div>
+<div class="dr"><div class="di">XLS</div><div class="dn">60200 — Hannoush Jewelers SG1 CAM Questionnaire</div><div class="dm">PMiller · 11-11-2025</div></div>
+<div class="dr"><div class="di">PDF</div><div class="dn">60200 — Hannoush CAM LOAS</div><div class="dm">PMiller · 11-11-2025</div></div>
+<div class="dr"><div class="di">XLS</div><div class="dn">60200 — Hannoush Jewelers Store #24 295 New State H</div><div class="dm">PMiller · 02-06-2026</div></div>
+<div class="dr"><div class="di">XLS</div><div class="dn">60200 — Cut Sheet</div><div class="dm">AStevens · 02-06-2026</div></div>
+<div class="dr"><div class="di">DOC</div><div class="dn">60200 — TN Script</div><div class="dm">AStevens · 02-06-2026</div></div>
+<div class="dr" style="border-bottom:none"><div class="di">XLS</div><div class="dn">60200 — Logins</div><div class="dm">AStevens · 02-06-2026</div></div>
+</div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="pnot" class="pg">
+<div class="ph">Notifications</div><div class="ps">Order notifications and automatic alerts</div>
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">Order notifications</div></div>
+<div class="tw"><table>
+<thead><tr><th>Date</th><th>Order</th><th>Task</th><th>Sent to</th></tr></thead>
+<tbody>
+<tr><td class="mn2" style="font-size:11px">02-13-2026</td><td>321393 — newVoice Hosted</td><td style="font-weight:500">Order complete</td><td style="font-size:11px">gsavard@hannoush.com, ktrombetta@amplix.com</td></tr>
+<tr><td class="mn2" style="font-size:11px">02-13-2026</td><td>321393 — newVoice Hosted</td><td>Installation and testing complete</td><td style="font-size:11px">polenik@nhcgrp.com, gsavard@hannoush.com + 3</td></tr>
+<tr><td class="mn2" style="font-size:11px">02-06-2026</td><td>321393 — newVoice Hosted</td><td>Shipped equipment</td><td style="font-size:11px">gsavard@hannoush.com + 3</td></tr>
+<tr><td class="mn2" style="font-size:11px">09-16-2025</td><td>344702 — Cloud/DR Disconnect</td><td>Cease billing</td><td style="font-size:11px">kmixon@nhcgrp.com, gsavard@hannoush.com + 1</td></tr>
+<tr><td class="mn2" style="font-size:11px">08-28-2025</td><td>321392 — NHC Security</td><td style="font-weight:500">Bill activation</td><td style="font-size:11px">kmixon@nhcgrp.com + 3</td></tr>
+<tr><td class="mn2" style="font-size:11px">08-28-2025</td><td>343414 — Wireless DIA</td><td style="font-weight:500">Bill activation</td><td style="font-size:11px">kmixon@nhcgrp.com + 3</td></tr>
+<tr><td class="mn2" style="font-size:11px">03-07-2025</td><td>321393 — newVoice Hosted</td><td>Order approved</td><td style="font-size:11px">gsavard@hannoush.com</td></tr>
+<tr><td class="mn2" style="font-size:11px">05-13-2024</td><td>280165 — newVoice Hosted MAC</td><td>Installation and testing complete</td><td style="font-size:11px">polenik@nhcgrp.com, gsavard@hannoush.com + 1</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- NOTES (ops) -->
+<div id="pnotes" class="pg ops">
+<div class="ph">Notes</div><div class="ps">60200 — Equipment, General, Order, Inventory</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">All notes</div><button class="btn sm bp">+ Add note</button></div>
+<div style="padding:0 1.25rem">
+<div class="ntm"><div class="nav" style="background:var(--alt);color:var(--amr)">RG</div><div><div class="nmeta"><span class="nau">Robert Goodwin</span><span class="nrl" style="background:var(--tlt);color:var(--teal)">Ops</span><span class="chip cb" style="font-size:10px">Order</span><span class="ntx">02-13-2026</span></div><div class="ntxt">CC Order #321393 sent to CustomCall via Bill-O-Matic. Order complete confirmed.</div></div></div>
+<div class="ntm"><div class="nav" style="background:var(--blt);color:var(--blu)">PF</div><div><div class="nmeta"><span class="nau">Paul Ferreira</span><span class="nrl" style="background:var(--blt);color:var(--blu)">OSS</span><span class="chip ct" style="font-size:10px">General</span><span class="ntx">02-13-2026</span></div><div class="ntxt">Upgrade complete. 3 Poly Edge E300 seats active on 774-632-5366–5368. E911 confirmed.</div></div></div>
+<div class="ntm" style="border-bottom:none"><div class="nav" style="background:var(--tlt);color:var(--teal)">PM</div><div><div class="nmeta"><span class="nau">Paul Miller</span><span class="nrl" style="background:var(--tlt);color:var(--teal)">Ops</span><span class="chip ca" style="font-size:10px">Equipment</span><span class="ntx">08-28-2025</span></div><div class="ntxt">NHC Security + Wireless DIA activated. FortiGate 40F online. StackGuard confirmed.</div></div></div>
+</div>
+</div>
+</div>
+
+<!-- INVENTORY (global) -->
+<div id="pinv" class="pg">
+<div class="ph">Inventory</div><div class="ps">60200 — 6 Phones · 2 Routers · 2 Switches · 5 Accessories</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Customer inventory</div><div class="ops" style="display:flex;gap:8px"><button class="btn sm">Send to CustomCall</button><button class="btn sm">Inventory functions</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>Item codes</th><th>MAC / Serial</th><th>Finance status</th><th>Wty exp</th><th class="ops">CPE state</th><th class="ops">Cost</th></tr></thead>
+<tbody>
+<tr><td><div style="font-weight:500">FORTINET FortiGate-40F Firewall</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN40FR</span><span class="chip cs" style="font-size:10px;margin:1px">FN40FX</span><span class="chip cs" style="font-size:10px;margin:1px">CNFN40FR</span></td><td class="mn2" style="font-size:11px">0401A1227E80</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$297</td></tr>
+<tr><td><div style="font-weight:500">FortiAP 221E Access Point</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN221ER</span><span class="chip cs" style="font-size:10px;margin:1px">CNFN221ER</span></td><td class="mn2" style="font-size:11px">38C0EAFA1F28</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$132</td></tr>
+<tr><td><div style="font-weight:500">FORTiSwitch 24FF-PORT SWITCH</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">FN24PTPOER</span><span class="chip cs" style="font-size:10px;margin:1px">CNF24PTPOR</span></td><td class="mn2" style="font-size:11px">0401A1C88014</td><td><span class="chip ct">Billing rental</span></td><td class="mn2" style="font-size:11px">04-30-2028</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$957</td></tr>
+<tr><td><div style="font-weight:500">Peplink MAX BR1-Mini-5G Mobile</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PMBRI5GR</span></td><td class="mn2" style="font-size:11px">D413F86E71C0</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$399</td></tr>
+<tr><td><div style="font-weight:500">Poly Edge E300 ×3</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PEDGEE300R</span></td><td class="mn2" style="font-size:11px">·612728 · ·1366A · ·613693</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$116 ea</td></tr>
+<tr><td><div style="font-weight:500">Polycom VVX 400 ×3</div><div style="font-size:11px;color:var(--amr)">CPE state: Obsolete</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">RPVX400R</span></td><td class="mn2" style="font-size:11px">·902DAF · ·902DCD · ·902F4E</td><td><span class="chip cs">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px;color:var(--amr)">Obsolete</td><td class="mn2 ops">$148 ea</td></tr>
+<tr><td><div style="font-weight:500">Poly Edge E300|400 PSU ×3</div></td><td style="font-size:11px"><span class="chip cs" style="font-size:10px;margin:1px">PEGEPS3/4R</span></td><td class="mn2" style="font-size:11px">NHC8535S · NHC8550S · NHC8556S</td><td><span class="chip ct">Billing rental</span></td><td>—</td><td class="mn2 ops" style="font-size:11px">Customer</td><td class="mn2 ops">$38 ea</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- PHONE NUMBERS (global) -->
+<div id="ptns" class="pg">
+<div class="ph">Phone numbers</div><div class="ps">60200 — all TNs</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">TN list</div><div style="display:flex;gap:8px" class="ops"><button class="btn sm">Send DID to CC</button><button class="btn sm">TN Status Manager</button><button class="btn sm">CSV</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Number</th><th>Ext</th><th>Extension name</th><th>Switch</th><th>Line type</th><th>Status</th><th>MAC</th><th>CC</th><th>Billing</th><th>E911</th><th class="ops">RCF</th><th class="ops">In Dash</th></tr></thead>
+<tbody>
+<tr><td class="mn2">(774) 632-5366</td><td class="mn2" style="font-size:11px">2411</td><td>Show Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="sd sda" style="font-size:11px"><span class="dot"></span>Assigned</span></td><td class="mn2" style="font-size:10px">482567612728</td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(774) 632-5367</td><td></td><td>Store Manager 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="sd sda" style="font-size:11px"><span class="dot"></span>Assigned</span></td><td class="mn2" style="font-size:10px">48256761366A</td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(774) 632-5368</td><td></td><td>Back Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="sd sda" style="font-size:11px"><span class="dot"></span>Assigned</span></td><td class="mn2" style="font-size:10px">482567613693</td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip ct" style="font-size:10px">Yes</span></td></tr>
+<tr><td class="mn2">(595) 200-0591</td><td class="mn2" style="font-size:11px">2401</td><td>Store Manager 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="sd sda" style="font-size:11px"><span class="dot"></span>Assigned</span></td><td class="mn2" style="font-size:10px">64167F902DAF</td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip ct" style="font-size:10px">Yes</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(595) 200-0592</td><td class="mn2" style="font-size:11px">2402</td><td>Back Room 24</td><td style="font-size:11px">Meta</td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="sd sda" style="font-size:11px"><span class="dot"></span>Assigned</span></td><td class="mn2" style="font-size:10px">64167F902DCD</td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip ct" style="font-size:10px">Yes</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(508) 824-2045</td><td></td><td></td><td></td><td><span class="chip cs" style="font-size:10px">ANI</span></td><td><span class="sd sdp" style="font-size:11px"><span class="dot"></span>Unassigned</span></td><td></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td></tr>
+<tr><td class="mn2">(508) 828-2560</td><td></td><td></td><td></td><td><span class="chip cs" style="font-size:10px">ANI</span></td><td><span class="sd sdp" style="font-size:11px"><span class="dot"></span>Unassigned</span></td><td></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip ct" style="font-size:10px">Yes</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td><td class="ops"><span class="chip cs" style="font-size:10px">No</span></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- FINANCE (ops) -->
+<div id="pfin" class="pg ops">
+<div class="ph">Finance</div><div class="ps">60200 — Inventory transactions &amp; financial status</div>
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">Inventory transactions</div><div style="display:flex;gap:8px"><button class="btn sm">Send to CustomCall</button><button class="btn sm">Edit inventory transactions</button><button class="btn sm">Return inventory transactions</button><button class="btn sm">Export CSV</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>MAC</th><th>Finance status</th><th>Workflow status</th><th>CPE assigned</th><th>CPE state</th><th>Condition</th><th>Cost</th><th>Ext</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:500">Cisco ASA5506-K9</td><td class="mn2" style="font-size:11px">SJMX2103Y3LS</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip cr2" style="font-size:10px">WIP_DISCO</span></td><td>Customer</td><td>Never returned</td><td>Never returned</td><td class="mn2">$490</td><td>—</td></tr>
+<tr><td style="font-weight:500">Cisco SF300-24P</td><td class="mn2" style="font-size:11px">0038DFC839A3</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip cr2" style="font-size:10px">WIP_DISCO</span></td><td>Customer</td><td>Never returned</td><td>Never returned</td><td class="mn2">$384</td><td>—</td></tr>
+<tr><td style="font-weight:500">FORTINET FortiGate-40F</td><td class="mn2" style="font-size:11px">0401A1227E80</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip ct" style="font-size:10px">Billable</span></td><td>Customer</td><td>Customer</td><td>New</td><td class="mn2">$297</td><td>—</td></tr>
+<tr><td style="font-weight:500">FORTiSwitch 24FF</td><td class="mn2" style="font-size:11px">0401A1C88014</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip ct" style="font-size:10px">Billable</span></td><td>Customer</td><td>Customer</td><td>New</td><td class="mn2">$957</td><td>—</td></tr>
+<tr><td style="font-weight:500">Peplink MAX BR1-Mini-5G</td><td class="mn2" style="font-size:11px">D413F86E71C0</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip ct" style="font-size:10px">Billable</span></td><td>Customer</td><td>Customer</td><td>New</td><td class="mn2">$399</td><td>—</td></tr>
+<tr><td style="font-weight:500">Poly Edge E300 ×3</td><td class="mn2" style="font-size:11px">·612728 · ·1366A · ·613693</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip cg" style="font-size:10px">Order complete</span></td><td>Customer</td><td>Customer</td><td>New</td><td class="mn2">$116</td><td>2411</td></tr>
+<tr><td style="font-weight:500">Polycom VVX 400 ×3</td><td class="mn2" style="font-size:11px">·902DAF · ·902DCD · ·902F4E</td><td><span class="chip ct">Billing rental</span></td><td><span class="chip cg" style="font-size:10px">Order complete</span></td><td>NHCR</td><td style="color:var(--amr)">Obsolete</td><td>New</td><td class="mn2">$148</td><td>2401</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- BILL-O-MATIC (ops) -->
+<div id="pbom" class="pg ops">
+<div class="ph">Bill-O-Matic</div><div class="ps">Send inventory and TNs to CustomCall billing</div>
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">MRC inventory</div><div style="display:flex;gap:8px"><button class="btn sm bp">Send to CustomCall</button><button class="btn sm">Send (package)</button><button class="btn sm">Test new code package</button></div></div>
+<div style="padding:1.25rem;color:var(--ink3);font-style:italic;font-size:13px">No MRC inventory items pending.</div>
+</div>
+<div class="cd" style="margin-bottom:14px">
+<div class="cdh"><div class="cdht">TN inventory</div><div style="display:flex;gap:8px"><button class="btn sm">CSV</button><button class="btn sm bp">Send to CustomCall</button></div></div>
+<div class="tw"><table>
+<thead><tr><th>Phone number</th><th>BTN</th><th>Item code</th><th>Switch</th><th>Line type</th><th>CC</th><th>Billing</th><th>E911</th></tr></thead>
+<tbody>
+<tr><td class="mn2">26075</td><td class="mn2" style="font-size:11px">60200NEWVOICE</td><td></td><td></td><td><span class="chip cb" style="font-size:10px">VIP</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip cs" style="font-size:10px">No</span></td><td><span class="chip cs" style="font-size:10px">No</span></td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="cd">
+<div class="cdh"><div class="cdht">Order history</div></div>
+<div class="tw"><table>
+<thead><tr><th>CustomCall order</th><th>OSS order</th><th>Date sent</th><th>User</th><th></th></tr></thead>
+<tbody>
+<tr><td class="mn2">321393</td><td class="mn2">0</td><td class="mn2" style="font-size:11px">02-13-2026</td><td>Robert Goodwin</td><td><button class="btn sm">View detail</button></td></tr>
+<tr><td class="mn2">353272</td><td class="mn2">132459</td><td class="mn2" style="font-size:11px">11-11-2025</td><td>Paul Miller</td><td><button class="btn sm">View detail</button></td></tr>
+<tr><td class="mn2">317347</td><td class="mn2">112053</td><td class="mn2" style="font-size:11px">08-28-2025</td><td>Paul Miller</td><td><button class="btn sm">View detail</button></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+
+<!-- SHIPMENTS (ops) -->
+<div id="pship" class="pg ops">
+<div class="ph">Shipments</div><div class="ps">60200 — all equipment shipments</div>
+<div style="margin-bottom:14px">
+<div class="sh2">▾ &nbsp;02-06-2026 UPS Shipment — 6 item(s) &nbsp;<span class="mn2" style="font-size:11px;color:var(--ink3)">1Z08960V0390628899</span></div>
+<div class="sb3">
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>MAC</th><th>Ship date</th><th>Carrier</th><th>Order</th></tr></thead>
+<tbody>
+<tr><td>Poly Edge E300|400 PSU</td><td class="mn2" style="font-size:11px">NHC8535S</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground · $27.05</td><td class="mn2">321393</td></tr>
+<tr><td>Poly Edge E300|400 PSU</td><td class="mn2" style="font-size:11px">NHC8556S</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground</td><td class="mn2">321393</td></tr>
+<tr><td>Poly Edge E300|400 PSU</td><td class="mn2" style="font-size:11px">NHC8550S</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground</td><td class="mn2">321393</td></tr>
+<tr><td>Poly Edge E300</td><td class="mn2" style="font-size:11px">482567612728</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground</td><td class="mn2">321393</td></tr>
+<tr><td>Poly Edge E300</td><td class="mn2" style="font-size:11px">48256761366A</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground</td><td class="mn2">321393</td></tr>
+<tr><td>Poly Edge E300</td><td class="mn2" style="font-size:11px">482567613693</td><td class="mn2" style="font-size:11px">02-06-2026</td><td>UPS Ground</td><td class="mn2">321393</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div style="margin-bottom:14px">
+<div class="sh2">▾ &nbsp;08-25-2025 UPS Shipment — 7 item(s) &nbsp;<span class="mn2" style="font-size:11px;color:var(--ink3)">1Z08960V0391352292</span></div>
+<div class="sb3">
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>MAC</th><th>Ship date</th><th>Carrier</th><th>Order</th></tr></thead>
+<tbody>
+<tr><td>FORTINET FortiGate-40F Firewall</td><td class="mn2" style="font-size:11px">0401A1227E80</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground · $27.27</td><td class="mn2">321392</td></tr>
+<tr><td>FortiAP 221E Access Point</td><td class="mn2" style="font-size:11px">38C0EAFA1F28</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+<tr><td>FORTiSwitch 24FF-PORT SWITCH</td><td class="mn2" style="font-size:11px">0401A1C88014</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+<tr><td>FortiAP 221E FortiCare Premium Support 3YR</td><td class="mn2" style="font-size:11px">NHC00088588A</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+<tr><td>FortiGate 40F Unified Threat Protection 3YR</td><td class="mn2" style="font-size:11px">NHC00088603A</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+<tr><td>FortiGate 40F FortiCloud Manager 3YR</td><td class="mn2" style="font-size:11px">NHC00088613A</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+<tr><td>FortiSwitch 124FF Premium Support 3YR</td><td class="mn2" style="font-size:11px">NHC00088627A</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">321392</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div style="margin-bottom:14px">
+<div class="sh2">▾ &nbsp;08-25-2025 UPS Shipment — 2 item(s) &nbsp;<span class="mn2" style="font-size:11px;color:var(--ink3)">1Z08960V0391352292</span></div>
+<div class="sb3">
+<div class="tw"><table>
+<thead><tr><th>Item</th><th>MAC</th><th>Ship date</th><th>Carrier</th><th>Order</th></tr></thead>
+<tbody>
+<tr><td>Peplink MAX BR1 Support — 1YR</td><td class="mn2" style="font-size:11px">NHC00093640A</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground · $0.00</td><td class="mn2">343414</td></tr>
+<tr><td>Peplink MAX-BR1-MINI-5G Mobile</td><td class="mn2" style="font-size:11px">D413F86E71C0</td><td class="mn2" style="font-size:11px">08-25-2025</td><td>UPS Ground</td><td class="mn2">343414</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
 
 <script>
 const ROLES = {
   customer: {
-    name: 'J. Anderson',
-    initials: 'JA',
-    tag: 'customer',
-    avatarBg: '#2563C4',
-    chipBg: '#EEF3FD',
-    chipColor: '#1A3F8A',
-    chipLabel: 'Customer',
-    dashTotal: '$745.69',
-    dashDelta: '≈ Mar 2026',
-    dashAccounts: '3',
-    dashAccountsSub: 'Active accounts',
-    dashM4Label: 'Rental devices',
-    dashM4Val: '9',
-    dashM4Sub: 'Active terms',
-    alertArea: '<div class="alert-bar alert-warn">⚠ POTS 12mo term renews May 2026 — contact your account manager to discuss options</div>',
-    heroActions: '<button class="btn">Download invoice</button><button class="btn">File dispute</button>',
-    hiddenSelectors: ['.ops-only-row', '.ops-tab-item', '.ops-hidden'],
-    visibleSelectors: []
+    name:'Gary Savard', init:'GS', tag:'Customer', bg:'#2563C4',
+    cbg:'#EBF1FD', cc:'#1A3F8A',
+    mrc:'$718.86',
+    s4l:'Open tickets', s4v:'0', s4s:'All locations',
+    alerts:'',
+    heroAct:'<button class="btn">Download invoice</button><button class="btn">File dispute</button>',
+    showOps: false
   },
   ops: {
-    name: 'Sarah Chen',
-    initials: 'SC',
-    tag: 'ops',
-    avatarBg: '#0F7B5A',
-    chipBg: '#E6F5EF',
-    chipColor: '#084D38',
-    chipLabel: 'Ops',
-    dashTotal: '$1,145.21',
-    dashDelta: '+2.3% vs Mar',
-    dashAccounts: '3',
-    dashAccountsSub: 'Managed accounts',
-    dashM4Label: 'Open disputes',
-    dashM4Val: '2',
-    dashM4Sub: '1 needs response',
-    alertArea: '<div class="alert-bar alert-warn">⚠ Dispute #DSP-00412 pending ops response — Harborview Dental</div><div class="alert-bar alert-info" style="margin-top:8px">ℹ StackGuard duplicate (item 4719952) flagged on acct 60200 — review before next cycle</div>',
-    heroActions: '<button class="btn ops-only" style="border-color:var(--teal);color:var(--teal-text);background:var(--teal-bg)">Edit charges</button><button class="btn">Override item</button><button class="btn">Export CSV</button>',
-    hiddenSelectors: ['.ops-hidden', '.customer-hidden'],
-    visibleSelectors: ['.ops-only-row']
+    name:'Sarah Chen', init:'SC', tag:'Ops', bg:'#0A6E52',
+    cbg:'#E4F4EE', cc:'#0A6E52',
+    mrc:'$9,804',
+    s4l:'Open disputes', s4v:'0', s4s:'All locations',
+    alerts:'<div class="al aw">⚠ POTS 12mo term on 508-824-2045 and 508-828-2560 renews May 2026 — action required</div><div class="al ai2">ℹ Duplicate StackGuard item 4719952 on 60200CAMMINT001 zeroed — remove before next cycle</div>',
+    heroAct:'<button class="btn btl">Edit charges</button><button class="btn">Override item</button><button class="btn">Export CSV</button>',
+    showOps: true
   },
   oss: {
-    name: 'Mike Torres',
-    initials: 'MT',
-    tag: 'oss',
-    avatarBg: '#7C3ABA',
-    chipBg: '#F3ECFD',
-    chipColor: '#4C1D8F',
-    chipLabel: 'OSS Admin',
-    dashTotal: '$1,145.21',
-    dashDelta: '+2.3% vs Mar',
-    dashAccounts: '3',
-    dashAccountsSub: 'All accounts',
-    dashM4Label: 'Provisioning queue',
-    dashM4Val: '0',
-    dashM4Sub: 'Active orders',
-    alertArea: '<div class="alert-bar alert-info">ℹ OSS Admin — full system access enabled. Duplicate item 4719952 on acct 60200 scheduled for removal.</div>',
-    heroActions: '<button class="btn oss-only" style="border-color:var(--purple);color:var(--purple-text);background:var(--purple-bg)">Add service</button><button class="btn oss-only" style="border-color:var(--purple);color:var(--purple-text);background:var(--purple-bg)">Remove service</button><button class="btn">Edit item</button><button class="btn">Export</button>',
-    hiddenSelectors: ['.customer-hidden'],
-    visibleSelectors: ['.ops-only-row', '.oss-only-row']
+    name:'Mike Torres', init:'MT', tag:'OSS Admin', bg:'#7C3AED',
+    cbg:'#F3ECFD', cc:'#4C1D8F',
+    mrc:'$9,804',
+    s4l:'Provisioning queue', s4v:'0', s4s:'Active orders',
+    alerts:'<div class="al ai2">ℹ OSS Admin — full system access. Duplicate item 4719952 scheduled for removal next cycle.</div>',
+    heroAct:'<button class="btn" style="border-color:var(--pur);color:var(--pur)">Add service</button><button class="btn" style="border-color:var(--pur);color:var(--pur)">Remove service</button><button class="btn">Edit item</button>',
+    showOps: true
   }
 };
 
-let currentRole = 'ops';
-let selectedRole = 'ops';
+const TITLES = {
+  pd:'Dashboard', ploc:'Locations', psol:'Solutions', pld:'Location detail',
+  pinv:'Inventory', ptns:'Phone numbers', pnet:'Network', pdlr:'DLR',
+  pbil:'Billing', pord:'Orders', ptix:'Tickets', pdoc:'Documents',
+  pnot:'Notifications', pnotes:'Notes', pfin:'Finance', pbom:'Bill-O-Matic', pship:'Shipments'
+};
 
-function selectRole(r, el) {
-  selectedRole = r;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
+let curRole = 'ops', selRole = 'ops';
+
+function pickRole(r, el) {
+  selRole = r;
+  document.querySelectorAll('.ro').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
 }
 
-function doLogin() {
-  currentRole = selectedRole;
-  applyRole(currentRole);
-  document.getElementById('screen-login').classList.remove('active');
-  document.getElementById('screen-app').classList.add('active');
-  navTo('dashboard', null);
+function login() {
+  curRole = selRole;
+  applyRole(curRole);
+  document.getElementById('sl').classList.remove('on');
+  document.getElementById('sa').classList.add('on');
+  go('pd', null);
 }
 
-function doLogout() {
-  document.getElementById('screen-app').classList.remove('active');
-  document.getElementById('screen-login').classList.add('active');
+function logout() {
+  document.getElementById('sa').classList.remove('on');
+  document.getElementById('sl').classList.add('on');
 }
 
-function applyRole(role) {
-  const r = ROLES[role];
-  document.getElementById('sidebar-name').textContent = r.name;
-  document.getElementById('sidebar-role').textContent = r.tag.toUpperCase();
-  const av = document.getElementById('sidebar-avatar');
-  av.textContent = r.initials;
-  av.style.background = r.avatarBg;
+function applyRole(r) {
+  const R = ROLES[r];
+  // avatar
+  const av = document.getElementById('uav');
+  av.textContent = R.init;
+  av.style.background = R.bg;
   av.style.color = '#fff';
-  av.style.fontSize = '12px';
-  av.style.fontWeight = '500';
-
-  const chip = document.getElementById('topbar-chip');
-  chip.textContent = r.chipLabel;
-  chip.style.background = r.chipBg;
-  chip.style.color = r.chipColor;
-
-  document.getElementById('dash-total').textContent = r.dashTotal;
-  document.getElementById('dash-delta').textContent = r.dashDelta;
-  document.getElementById('dash-accounts').textContent = r.dashAccounts;
-  document.getElementById('dash-accounts-sub').textContent = r.dashAccountsSub;
-  document.getElementById('dash-m4-label').textContent = r.dashM4Label;
-  document.getElementById('dash-m4-val').textContent = r.dashM4Val;
-  document.getElementById('dash-m4-sub').textContent = r.dashM4Sub;
-  document.getElementById('dash-alert-area').innerHTML = r.alertArea;
-  document.getElementById('hero-actions').innerHTML = r.heroActions;
-
-  // Show/hide elements by role
-  const allToggle = ['.ops-only-row','.oss-only-row','.ops-hidden','.customer-hidden','.ops-tab-item'];
-  allToggle.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.classList.add('hidden'));
+  document.getElementById('unm').textContent = R.name;
+  document.getElementById('url').textContent = R.tag.toUpperCase();
+  // chip
+  const chip = document.getElementById('rchip');
+  chip.textContent = R.tag;
+  chip.style.background = R.cbg;
+  chip.style.color = R.cc;
+  // dashboard
+  document.getElementById('dmrc').textContent = R.mrc;
+  document.getElementById('ds4l').textContent = R.s4l;
+  document.getElementById('ds4v').textContent = R.s4v;
+  document.getElementById('ds4s').textContent = R.s4s;
+  document.getElementById('dalerts').innerHTML = R.alerts;
+  document.getElementById('dheroact').innerHTML = R.heroAct;
+  document.getElementById('ldheroact').innerHTML = R.heroAct;
+  // ops visibility
+  document.querySelectorAll('.ops').forEach(el => {
+    el.style.display = R.showOps ? '' : 'none';
   });
-  r.visibleSelectors.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.classList.remove('hidden'));
-  });
-  r.hiddenSelectors.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.classList.add('hidden'));
-  });
+}
 
-  // OSS gets reports nav item
-  const reportsNav = document.querySelector('.nav-item.ops-hidden');
-  if (role === 'ops' || role === 'oss') {
-    document.querySelectorAll('.ops-hidden').forEach(el => el.classList.remove('hidden'));
+function go(page, navEl) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nl').forEach(n => n.classList.remove('on'));
+  const pg = document.getElementById(page);
+  if (pg) pg.classList.add('on');
+  if (navEl) navEl.classList.add('on');
+  document.getElementById('ttt').textContent = TITLES[page] || page;
+  document.getElementById('tcr').innerHTML = (page === 'pld')
+    ? '60200 <span>/ Location detail</span>' : '';
+}
+
+function tblk(bodyId, chevId) {
+  const b = document.getElementById(bodyId);
+  if (!b) return;
+  const hidden = b.style.display === 'none';
+  b.style.display = hidden ? '' : 'none';
+  if (chevId) {
+    const c = document.getElementById(chevId);
+    if (c) c.classList.toggle('op', hidden);
   }
 }
 
-function navTo(page, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const target = document.getElementById('page-' + page);
-  if (target) target.classList.add('active');
-  if (el) el.classList.add('active');
-
-  const titles = {
-    dashboard: 'Dashboard',
-    billing: 'Billing detail',
-    accounts: 'Accounts',
-    disputes: 'Disputes',
-    reports: 'Reports',
-    services: 'Service management',
-    provisioning: 'Provisioning'
-  };
-  document.getElementById('topbar-title').textContent = titles[page] || page;
-  document.getElementById('topbar-crumb').innerHTML = page === 'billing'
-    ? '60200 <span>/ Billing</span>'
-    : page === 'dashboard' ? '' : '<span>' + (titles[page]||page) + '</span>';
+function stab(paneId, el) {
+  const parent = el.closest('.pg') || document.body;
+  parent.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  parent.querySelectorAll('.tp').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  const pane = document.getElementById(paneId);
+  if (pane) pane.classList.add('on');
 }
 
-function openAccount() {
-  navTo('billing', null);
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.nav-item')[2].classList.add('active');
-}
-
-function toggleBlock(bodyId, expId) {
-  const body = document.getElementById(bodyId);
-  const exp = document.getElementById(expId);
-  const hidden = body.style.display === 'none';
-  body.style.display = hidden ? 'block' : 'none';
-  if (exp) exp.classList.toggle('open', hidden);
-}
-
-function switchTab(tabId, el) {
-  document.querySelectorAll('.billing-tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.billing-tab').forEach(t => t.classList.remove('active'));
-  const target = document.getElementById('tab-' + tabId);
-  if (target) target.classList.add('active');
-  if (el) el.classList.add('active');
-}
-
-// init
+// Boot
 applyRole('ops');
-document.querySelectorAll('.role-btn')[1].classList.add('selected');
+document.querySelectorAll('.ro')[1].classList.add('on');
 </script>
+</body>
 </html>
